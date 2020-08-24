@@ -6,27 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MoveIt可视化配置和仿真指南（2） | Hexo</title>
+  <title>MoveIt编程入门（1） | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="3.MoveIt + Gazebo仿真配置ros_control 控制器管理器提供一种通用的接口来管理不同的控制器 控制器读取硬件状态，发布控制指令，完成每个joint的控制 硬件资源为上下两层提供硬件资源的接口 机器人硬件抽象机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作 真实机器人执行接收到的命令MoveIt控制框架     MoveIt+Gazebo仿真框架">
+  <meta name="description" content="MoveIt编程接口 MoveIt核心节点--move_group   连接控制需要的规划组planning group 设置目标位姿（关节空间或笛卡尔空间） 设置运动约束（可选） 使用MoveIt规划一条到达目标的轨迹 修改轨迹（如速度等参数） 执行规划出的轨迹">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MoveIt可视化配置和仿真指南（2）">
-<meta property="og:url" content="http://yoursite.com/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/index.html">
+<meta property="og:title" content="MoveIt编程入门（1）">
+<meta property="og:url" content="http://yoursite.com/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="3.MoveIt + Gazebo仿真配置ros_control 控制器管理器提供一种通用的接口来管理不同的控制器 控制器读取硬件状态，发布控制指令，完成每个joint的控制 硬件资源为上下两层提供硬件资源的接口 机器人硬件抽象机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作 真实机器人执行接收到的命令MoveIt控制框架     MoveIt+Gazebo仿真框架">
+<meta property="og:description" content="MoveIt编程接口 MoveIt核心节点--move_group   连接控制需要的规划组planning group 设置目标位姿（关节空间或笛卡尔空间） 设置运动约束（可选） 使用MoveIt规划一条到达目标的轨迹 修改轨迹（如速度等参数） 执行规划出的轨迹">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg">
-<meta property="article:published_time" content="2020-08-24T09:06:53.000Z">
-<meta property="article:modified_time" content="2020-08-24T09:13:24.673Z">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg">
+<meta property="article:published_time" content="2020-08-24T09:28:45.000Z">
+<meta property="article:modified_time" content="2020-08-24T09:37:34.898Z">
 <meta property="article:author" content="lowkeng">
 <meta property="article:tag" content="古月居">
 <meta property="article:tag" content="MoveIt">
 <meta property="article:tag" content="ROS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg">
+<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -167,40 +164,61 @@
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="-MoveIt可视化配置和仿真指南（2）" class="article article-type- " itemscope itemprop="blogPost">
+<article id="post-MoveIt编程入门（1）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      MoveIt可视化配置和仿真指南（2）
+      MoveIt编程入门（1）
     </h1>
   
 
         
-        <a href="/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-08-24T09:06:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
+        <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-08-24T09:28:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="3-MoveIt-Gazebo仿真配置"><a href="#3-MoveIt-Gazebo仿真配置" class="headerlink" title="3.MoveIt + Gazebo仿真配置"></a>3.MoveIt + Gazebo仿真配置</h1><h2 id="ros-control"><a href="#ros-control" class="headerlink" title="ros_control"></a>ros_control</h2><ul>
-<li>控制器管理器<br>提供一种通用的接口来管理不同的控制器</li>
-<li>控制器<br>读取硬件状态，发布控制指令，完成每个joint的控制</li>
-<li>硬件资源<br>为上下两层提供硬件资源的接口</li>
-<li>机器人硬件抽象<br>机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作</li>
-<li>真实机器人<br>执行接收到的命令<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg"><br><img src="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg"><center>MoveIt控制框架</center>
+        <h1 id="MoveIt编程接口"><a href="#MoveIt编程接口" class="headerlink" title="MoveIt编程接口"></a>MoveIt编程接口</h1><p><img src="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg"></p>
+<center>MoveIt核心节点--move_group</center>
 
-</li>
+<ul>
+<li>连接控制需要的规划组planning group</li>
+<li>设置目标位姿（关节空间或笛卡尔空间）</li>
+<li>设置运动约束（可选）</li>
+<li>使用MoveIt规划一条到达目标的轨迹</li>
+<li>修改轨迹（如速度等参数）</li>
+<li>执行规划出的轨迹<a id="more"></a>
+<h1 id="2-关节空间运动"><a href="#2-关节空间运动" class="headerlink" title="2.关节空间运动"></a>2.关节空间运动</h1>点到点运动：不需要在笛卡尔空间规划末端运动轨迹，机器人各个关节运动不需要联动（每个关节的运动是独立规划的）</li>
 </ul>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg"></p>
-<center>MoveIt+Gazebo仿真框架</center>
-
-<h2 id="启动demo"><a href="#启动demo" class="headerlink" title="启动demo"></a>启动demo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> marm_moveit_config demo_gazebo.launch</span><br></pre></td></tr></table></figure>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg"></p>
+<h2 id="第一种方法-设置各个关节点位姿角度"><a href="#第一种方法-设置各个关节点位姿角度" class="headerlink" title="第一种方法 设置各个关节点位姿角度"></a>第一种方法 设置各个关节点位姿角度</h2><p>正向运动学规划例程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> probot_anno_moveit_config demo.launch</span><br><span class="line"><span class="variable">$rosrun</span> probot_demo moveit_fk_demo.py</span><br></pre></td></tr></table></figure>
+<p><code>moveit_fk_demo.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂运动的允许误差值</span></span><br><span class="line">arm.set_goal_joint_tolerance(<span class="number">0.001</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置允许的最大速度和加速度</span></span><br><span class="line">arm.set_max_acceleration_scaling_factor(<span class="number">0.5</span>)</span><br><span class="line">arm.set_max_velocity_scaling_factor(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂先回到初始化位置</span></span><br><span class="line">arm.set_named_target(<span class="string">&#x27;home&#x27;</span>)</span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂的目标位置，使用六轴的位置数据进行描述（单位：弧度）</span></span><br><span class="line">joint_positions = [<span class="number">0.391410</span>, <span class="number">-0.676384</span>, <span class="number">-0.376217</span>, <span class="number">0.0</span>, <span class="number">1.052834</span>, <span class="number">0.454125</span>]</span><br><span class="line">arm.set_joint_value_target(joint_positions)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂完成运动</span></span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂先回到初始化位置</span></span><br><span class="line">arm.set_named_target(<span class="string">&#x27;home&#x27;</span>)</span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>关键API的实现步骤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"><span class="comment"># 设置机械臂的目标位置，使用六轴的位置数据进行描述（单位：弧度）</span></span><br><span class="line">joint_positions = [<span class="number">0.391410</span>, <span class="number">-0.676384</span>, <span class="number">-0.376217</span>, <span class="number">0.0</span>, <span class="number">1.052834</span>, <span class="number">0.454125</span>]</span><br><span class="line">arm.set_joint_value_target(joint_positions)</span><br><span class="line"><span class="comment"># 控制机械臂完成运动</span></span><br><span class="line">arm.go()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建规划组的控制对象</li>
+<li>设置关节空间运动的目标位姿</li>
+<li>完成规划并控制机械臂完成运动</li>
+</ul>
+<h2 id="第二种方法-设置xyz空间位置"><a href="#第二种方法-设置xyz空间位置" class="headerlink" title="第二种方法 设置xyz空间位置"></a>第二种方法 设置xyz空间位置</h2><p>逆向运动学规划例程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> probot_anno_moveit_config demo.launch</span><br><span class="line"><span class="variable">$rosrun</span> probot_demo moveit_ik_demo.py</span><br></pre></td></tr></table></figure>
+<p><code>moveit_ik_demo.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置机械臂工作空间中的目标位姿，位置使用x、y、z坐标描述，</span></span><br><span class="line"><span class="comment"># 姿态使用四元数描述，基于base_link坐标系</span></span><br><span class="line">target_pose = PoseStamped()</span><br><span class="line">target_pose.header.frame_id = reference_frame</span><br><span class="line">target_pose.header.stamp = rospy.Time.now()     </span><br><span class="line">target_pose.pose.position.x = <span class="number">0.2593</span></span><br><span class="line">target_pose.pose.position.y = <span class="number">0.0636</span></span><br><span class="line">target_pose.pose.position.z = <span class="number">0.1787</span></span><br><span class="line">target_pose.pose.orientation.x = <span class="number">0.70692</span></span><br><span class="line">target_pose.pose.orientation.y = <span class="number">0.0</span></span><br><span class="line">target_pose.pose.orientation.z = <span class="number">0.0</span></span><br><span class="line">target_pose.pose.orientation.w = <span class="number">0.70729</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机器臂当前的状态作为运动初始状态</span></span><br><span class="line">arm.set_start_state_to_current_state()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂终端运动的目标位姿</span></span><br><span class="line">arm.set_pose_target(target_pose, end_effector_link)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 规划运动路径</span></span><br><span class="line">traj = arm.plan()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照规划的运动路径控制机械臂运动</span></span><br><span class="line">arm.execute(traj)</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>关键API的实现步骤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"><span class="comment"># 获取终端link的名称</span></span><br><span class="line">end_effector_link = arm.get_end_effector_link()</span><br><span class="line"><span class="comment"># 设置目标位置所使用的参考坐标系</span></span><br><span class="line">reference_frame = <span class="string">&#x27;base_link&#x27;</span></span><br><span class="line">arm.set_pose_reference_frame(reference_frame)</span><br><span class="line"><span class="comment"># 规划运动路径</span></span><br><span class="line">traj = arm.plan()</span><br><span class="line"><span class="comment"># 按照规划的运动路径控制机械臂运动</span></span><br><span class="line">arm.execute(traj)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建运动规划组的控制对象</li>
+<li>获取机器人的终端link名称</li>
+<li>设置目标位姿对应的参考坐标系和起始、终止位姿</li>
+<li>完成规划并控制机械臂完成运动</li>
+</ul>
 
       
 
@@ -299,7 +317,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://lowkeng.github.io/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://lowkeng.github.io/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -313,18 +331,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%882%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MoveIt编程入门（1）
+          MoveIt编程入门（2）
         
       </div>
     </a>
   
   
-    <a href="/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MoveIt可视化配置和仿真指南（1）</div>
+    <a href="/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MoveIt可视化配置和仿真指南（2）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -351,7 +369,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-MoveIt-Gazebo%E4%BB%BF%E7%9C%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">3.MoveIt + Gazebo仿真配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ros-control"><span class="toc-number">1.1.</span> <span class="toc-text">ros_control</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8demo"><span class="toc-number">1.2.</span> <span class="toc-text">启动demo</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MoveIt%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.</span> <span class="toc-text">MoveIt编程接口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%85%B3%E8%8A%82%E7%A9%BA%E9%97%B4%E8%BF%90%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">2.关节空间运动</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%B3%95-%E8%AE%BE%E7%BD%AE%E5%90%84%E4%B8%AA%E5%85%B3%E8%8A%82%E7%82%B9%E4%BD%8D%E5%A7%BF%E8%A7%92%E5%BA%A6"><span class="toc-number">2.1.</span> <span class="toc-text">第一种方法 设置各个关节点位姿角度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95-%E8%AE%BE%E7%BD%AExyz%E7%A9%BA%E9%97%B4%E4%BD%8D%E7%BD%AE"><span class="toc-number">2.2.</span> <span class="toc-text">第二种方法 设置xyz空间位置</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>

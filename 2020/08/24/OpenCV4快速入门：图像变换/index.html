@@ -6,27 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MoveIt可视化配置和仿真指南（2） | Hexo</title>
+  <title>OpenCV4快速入门：图像变换 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="3.MoveIt + Gazebo仿真配置ros_control 控制器管理器提供一种通用的接口来管理不同的控制器 控制器读取硬件状态，发布控制指令，完成每个joint的控制 硬件资源为上下两层提供硬件资源的接口 机器人硬件抽象机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作 真实机器人执行接收到的命令MoveIt控制框架     MoveIt+Gazebo仿真框架">
+  <meta name="description" content="3.3图像变换本节将介绍如何通过OpenCV4中的函数实现图像形状的变换，包括图像的尺度变换、图像翻转以及图像的旋转。 3.3.1图像连接vconcat()函数用于实现图像数据或矩阵数据的上下连接，该函数可以连接存放在数组变量中的两个或多个Mat类型的数据。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MoveIt可视化配置和仿真指南（2）">
-<meta property="og:url" content="http://yoursite.com/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/index.html">
+<meta property="og:title" content="OpenCV4快速入门：图像变换">
+<meta property="og:url" content="http://yoursite.com/2020/08/24/OpenCV4%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="3.MoveIt + Gazebo仿真配置ros_control 控制器管理器提供一种通用的接口来管理不同的控制器 控制器读取硬件状态，发布控制指令，完成每个joint的控制 硬件资源为上下两层提供硬件资源的接口 机器人硬件抽象机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作 真实机器人执行接收到的命令MoveIt控制框架     MoveIt+Gazebo仿真框架">
+<meta property="og:description" content="3.3图像变换本节将介绍如何通过OpenCV4中的函数实现图像形状的变换，包括图像的尺度变换、图像翻转以及图像的旋转。 3.3.1图像连接vconcat()函数用于实现图像数据或矩阵数据的上下连接，该函数可以连接存放在数组变量中的两个或多个Mat类型的数据。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg">
-<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg">
-<meta property="article:published_time" content="2020-08-24T09:06:53.000Z">
-<meta property="article:modified_time" content="2020-08-24T09:13:24.673Z">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-19.png">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-20.png">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-21.png">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-23.png">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-25.png">
+<meta property="article:published_time" content="2020-08-24T09:38:28.000Z">
+<meta property="article:modified_time" content="2020-08-24T09:40:25.923Z">
 <meta property="article:author" content="lowkeng">
-<meta property="article:tag" content="古月居">
-<meta property="article:tag" content="MoveIt">
-<meta property="article:tag" content="ROS">
+<meta property="article:tag" content="OpenCV">
+<meta property="article:tag" content="OpenCv4快速入门，图像处理，图像变换">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg">
+<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-19.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -167,40 +167,223 @@
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="-MoveIt可视化配置和仿真指南（2）" class="article article-type- " itemscope itemprop="blogPost">
+<article id="post-OpenCV4快速入门：图像变换" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      MoveIt可视化配置和仿真指南（2）
+      OpenCV4快速入门：图像变换
     </h1>
   
 
         
-        <a href="/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-08-24T09:06:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
+        <a href="/2020/08/24/OpenCV4%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/" class="archive-article-date">
+  	<time datetime="2020-08-24T09:38:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="3-MoveIt-Gazebo仿真配置"><a href="#3-MoveIt-Gazebo仿真配置" class="headerlink" title="3.MoveIt + Gazebo仿真配置"></a>3.MoveIt + Gazebo仿真配置</h1><h2 id="ros-control"><a href="#ros-control" class="headerlink" title="ros_control"></a>ros_control</h2><ul>
-<li>控制器管理器<br>提供一种通用的接口来管理不同的控制器</li>
-<li>控制器<br>读取硬件状态，发布控制指令，完成每个joint的控制</li>
-<li>硬件资源<br>为上下两层提供硬件资源的接口</li>
-<li>机器人硬件抽象<br>机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作</li>
-<li>真实机器人<br>执行接收到的命令<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg"><br><img src="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg"><center>MoveIt控制框架</center>
-
-</li>
+        <h1 id="3-3图像变换"><a href="#3-3图像变换" class="headerlink" title="3.3图像变换"></a>3.3图像变换</h1><p>本节将介绍如何通过OpenCV4中的函数实现图像形状的变换，包括图像的尺度变换、图像翻转以及图像的旋转。</p>
+<h2 id="3-3-1图像连接"><a href="#3-3-1图像连接" class="headerlink" title="3.3.1图像连接"></a>3.3.1图像连接</h2><p>vconcat()函数用于实现图像数据或矩阵数据的上下连接，该函数可以连接存放在数组变量中的两个或多个Mat类型的数据。</p>
+<a id="more"></a>
+<p>vconcat()函数原型1</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::vconcat</span> <span class="params">( <span class="keyword">const</span> Mat *src,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">size_t</span> nsrc,</span></span></span><br><span class="line"><span class="function"><span class="params">                             OutputArray dst)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>src：Mat矩阵类型的数组（要求数组中所有Mat类元素具有相同的<strong>列数</strong>并且具有相同的<strong>数据类型</strong>和<strong>通道数</strong>）</li>
+<li>nsrc：数组中Mat类型数据的数目</li>
+<li>dst：连接后Mat类矩阵</li>
 </ul>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg"></p>
-<center>MoveIt+Gazebo仿真框架</center>
+</blockquote>
+<p>vconcat()函数原型1</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::vconcat</span> <span class="params">( InputArray src1,</span></span></span><br><span class="line"><span class="function"><span class="params">                             InputArray src2,</span></span></span><br><span class="line"><span class="function"><span class="params">                             OutputArray dst )</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>src1：第一个需要连接的Mat类矩阵</li>
+<li>src2：第二个需要连接的Mat类矩阵，与第一个具有相同的宽度、数据类型和通道数</li>
+<li>dst：连接后的Mat类型矩阵</li>
+</ul>
+</blockquote>
+<p>在拼接结果中src1在上方，src2在下方<br>同理，实现图像数据或矩阵数据左右横向连接的函数是hconcat(),也有两种原型，不再赘述。</p>
+<p>以下代码给出了对小型Mat类矩阵连接和图像进行连接的示例程序。该程序中分别对数组和Mat类矩阵进行两个方向的连接，并对一幅图像的4个象限的子图像进行拼接，最终连接成原始图像。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//矩阵数组的横竖连接</span></span><br><span class="line">    Mat matArray[] = &#123; Mat(<span class="number">1</span>,<span class="number">2</span>,CV_32FC1,cv::Scalar(<span class="number">1</span>)),Mat(<span class="number">1</span>,<span class="number">2</span>,CV_32FC1,cv::Scalar(<span class="number">2</span>)) &#125;;</span><br><span class="line">    Mat vout, hout;</span><br><span class="line">    vconcat(matArray, <span class="number">2</span>, vout);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;图像数组竖向连接：&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; vout &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    hconcat(matArray, <span class="number">2</span>, hout);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;图像数组横向连接：&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; hout &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//矩阵的横竖拼接</span></span><br><span class="line">    Mat A = (cv::Mat_&lt;<span class="keyword">float</span>&gt;(<span class="number">2</span>, <span class="number">2</span>) &lt;&lt; <span class="number">1</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">8</span>);</span><br><span class="line">    Mat B = (cv::Mat_&lt;<span class="keyword">float</span>&gt;(<span class="number">2</span>, <span class="number">2</span>) &lt;&lt; <span class="number">4</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">11</span>);</span><br><span class="line">    Mat vC, hC;</span><br><span class="line">    vconcat(A, B, vC);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;多个图像竖向连接：&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; vC &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    hconcat(A, B, hC);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;多个图像横向连接：&quot;</span> &lt;&lt; <span class="built_in">endl</span> &lt;&lt; hC &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//读取四个子图像，00左上角，01右上角，10右下角，11右下角</span></span><br><span class="line">    Mat img00 = imread(<span class="string">&quot;lena00.png&quot;</span>);</span><br><span class="line">    Mat img01 = imread(<span class="string">&quot;lena01.png&quot;</span>);</span><br><span class="line">    Mat img10 = imread(<span class="string">&quot;lena10.png&quot;</span>);</span><br><span class="line">    Mat img11 = imread(<span class="string">&quot;lena11.png&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (img00.empty() || img01.empty() || img10.empty() || img11.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请确认文件名称是否正确&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//显示4个子图像</span></span><br><span class="line">    imshow(<span class="string">&quot;img00&quot;</span>, img00);</span><br><span class="line">    imshow(<span class="string">&quot;img01&quot;</span>, img01);</span><br><span class="line">    imshow(<span class="string">&quot;img10&quot;</span>, img10);</span><br><span class="line">    imshow(<span class="string">&quot;img11&quot;</span>, img11);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//图像连接</span></span><br><span class="line">    Mat img, img0, img1;</span><br><span class="line">    <span class="comment">//图像横向连接</span></span><br><span class="line">    hconcat(img00, img01, img0);</span><br><span class="line">    hconcat(img10, img11, img1);</span><br><span class="line">    <span class="comment">//横向连接结果再进行竖向连接</span></span><br><span class="line">    vconcat(img0, img1, img);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//显示连接图像的结果</span></span><br><span class="line">    imshow(<span class="string">&quot;img0&quot;</span>, img0);</span><br><span class="line">    imshow(<span class="string">&quot;img1&quot;</span>, img1);</span><br><span class="line">    imshow(<span class="string">&quot;img&quot;</span>, img);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序中小型Mat矩阵的连接结果:<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-19.png"><br>程序中图像连接的结果：<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-20.png"></p>
+<h2 id="3-3-2图像尺寸变换"><a href="#3-3-2图像尺寸变换" class="headerlink" title="3.3.2图像尺寸变换"></a>3.3.2图像尺寸变换</h2><p>图像的尺寸变换实际就是改变图像的长和宽，实现图像的缩放。</p>
+<p>将图像修改成指定尺寸的resize()函数的原型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::resize</span><span class="params">(InputArray src.</span></span></span><br><span class="line"><span class="function"><span class="params">                        OutputArray dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                        Size dsize,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">double</span> fx = <span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">double</span> fy = <span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">int</span> interpolation = INTER_LINEAR)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>dsize：输出图像的尺寸</li>
+<li>fx：水平轴的比例因子，如果水平轴变成原来的两倍则赋值2</li>
+<li>fy：垂直轴的比例因子，如果垂直轴变为原来的两倍则赋值2</li>
+<li>interpolation：插值方法的标志，可选参数及含义见表3-3</li>
+</ul>
+</blockquote>
+<p>resize()函数的dsize和fx(fy)同时可以调整输出图像的参数，因此两类参数在实际使用时只需要使用一类，当两种方法算出来的输出图像尺寸不一致时，以dsize设置的图像尺寸为准。两种调整图像尺寸的参数的关系如下式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dsize &#x3D; Size ( round(fx*src.cols),round(fy*src.rows))</span><br></pre></td></tr></table></figure>
 
-<h2 id="启动demo"><a href="#启动demo" class="headerlink" title="启动demo"></a>启动demo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> marm_moveit_config demo_gazebo.launch</span><br></pre></td></tr></table></figure>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg"></p>
+<p>表3-3   插值方法标志</p>
+<table>
+<thead>
+<tr>
+<th>编制参数</th>
+<th>简记</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>INTER_NEAREST</td>
+<td>0</td>
+<td>最近邻插值法</td>
+</tr>
+<tr>
+<td>INTER_LINEAR</td>
+<td>1</td>
+<td>双线性插值法</td>
+</tr>
+<tr>
+<td>INTER_CUBIC</td>
+<td>2</td>
+<td>双三次插值法</td>
+</tr>
+<tr>
+<td>INTER_AREA</td>
+<td>3</td>
+<td>使用像素区域关系重新采样，首选用于图像缩小</td>
+</tr>
+<tr>
+<td>INTER_LANCZOS4</td>
+<td>4</td>
+<td>Lanczo插值法</td>
+</tr>
+<tr>
+<td>INTER_LINEAR_EXACT</td>
+<td>5</td>
+<td>位精确双线性插值法</td>
+</tr>
+<tr>
+<td>INTER_MAX</td>
+<td>7</td>
+<td>用掩码进行插值</td>
+</tr>
+<tr>
+<td>一般来讲，如果要缩小图像，那么通常使用INTER_AREA标志会有较好效果，而在放大图像时，采用INTER_CUBIC和INTER_LINEAR标志通常会有表较好的效果，前者计算速度慢，效果更好，后者计算速度快，效果也较好。</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>以下代码给出了图像缩放的示例程序。程序首先以灰度的形式读入一幅图像，之后利用INTER_AREA将图像缩小，并分别用INTER_CUBIC、INTER_NEAREST和INTE_LINEAR三种方法将图像放大到相同的尺寸。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat gray = imread(<span class="string">&quot;lena.png&quot;</span>, IMREAD_GRAYSCALE);</span><br><span class="line">    <span class="keyword">if</span> (gray.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请确认图像文件名称是否正确&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Mat smallImg, bigImg0, bigImg1, bigImg2;</span><br><span class="line">    resize(gray, smallImg, Size(<span class="number">15</span>, <span class="number">15</span>), <span class="number">0</span>, <span class="number">0</span>, INTER_AREA);  <span class="comment">//先将图像缩小</span></span><br><span class="line">    resize(smallImg, bigImg0, Size(<span class="number">30</span>, <span class="number">30</span>), <span class="number">0</span>, <span class="number">0</span>, INTER_NEAREST);  <span class="comment">//最近邻差值</span></span><br><span class="line">    resize(smallImg, bigImg1, Size(<span class="number">30</span>, <span class="number">30</span>), <span class="number">0</span>, <span class="number">0</span>, INTER_LINEAR);  <span class="comment">//双线性差值</span></span><br><span class="line">    resize(smallImg, bigImg2, Size(<span class="number">30</span>, <span class="number">30</span>), <span class="number">0</span>, <span class="number">0</span>, INTER_CUBIC);  <span class="comment">//双三次差值</span></span><br><span class="line">    namedWindow(<span class="string">&quot;smallImg&quot;</span>, WINDOW_NORMAL);  <span class="comment">//图像尺寸太小，一定要设置可以调节窗口大小标志</span></span><br><span class="line">    imshow(<span class="string">&quot;smallImg&quot;</span>, smallImg);</span><br><span class="line">    namedWindow(<span class="string">&quot;bigImg0&quot;</span>, WINDOW_NORMAL);</span><br><span class="line">    imshow(<span class="string">&quot;bigImg0&quot;</span>, bigImg0);</span><br><span class="line">    namedWindow(<span class="string">&quot;bigImg1&quot;</span>, WINDOW_NORMAL);</span><br><span class="line">    imshow(<span class="string">&quot;bigImg1&quot;</span>, bigImg1);</span><br><span class="line">    namedWindow(<span class="string">&quot;bigImg2&quot;</span>, WINDOW_NORMAL);</span><br><span class="line">    imshow(<span class="string">&quot;bigImg2&quot;</span>, bigImg2);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序运行结果：<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-21.png"></p>
+<h2 id="3-3-3图像翻转变换"><a href="#3-3-3图像翻转变换" class="headerlink" title="3.3.3图像翻转变换"></a>3.3.3图像翻转变换</h2><p>图像翻转变换函数flip()函数原型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::flip</span><span class="params">(InputArray src,</span></span></span><br><span class="line"><span class="function"><span class="params">                    OutputArray dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="keyword">int</span> flipCode)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>flipCode：翻转方式标志。数值大于0表示绕y轴进行翻转；等于0表示绕x轴进行翻转；大于0表示既绕y轴又绕x轴翻转</li>
+</ul>
+</blockquote>
+<p>该函数功能和参数都比较简单，不过多阐述。</p>
+<h2 id="3-3-4-图像仿射变换"><a href="#3-3-4-图像仿射变换" class="headerlink" title="3.3.4 图像仿射变换"></a>3.3.4 图像仿射变换</h2><p>在OpenCV4中并没有专门用于图像旋转的函数，而是通过图像的仿射变换实现旋转。实现图像的旋转，首先要确定旋转角度和旋转中心，之后确定旋转矩阵，最后通过仿射变换实现图像旋转。</p>
+<p>计算旋转矩阵的getRotationMatrix2D()函数的函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Mat <span class="title">cv::getRotationMatrix2D</span><span class="params">(Point2f center,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  <span class="keyword">double</span> angle,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                  <span class="keyword">double</span> scale)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>center：图像旋转中心位置</li>
+<li>angle：图像旋转角度，单位为度，正值为逆时针旋转</li>
+<li>scale：两个轴的比例因子，可以实现旋转过程中的图像缩放</li>
+</ul>
+</blockquote>
+<p>该函数返回图像旋转矩阵，返回的数据类型是一个Mat类，一个2x3的矩阵。如果我们已知图像旋转矩阵，那么可以自己生成旋转矩阵而不用调用该函数。该函数生成的旋转矩阵与旋转角度和旋转中心的关系式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Rotation &#x3D; \begin&#123;bmatrix&#125;</span><br><span class="line">\alpha  &amp; \beta  &amp;\left ( 1-\alpha  \right )*center.x - \beta *center.y \\ </span><br><span class="line">-\beta  &amp;\alpha   &amp; \beta *center.x +\left ( 1-\alpha \right )*center.y</span><br><span class="line">\end&#123;bmatrix&#125;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\alpha &#x3D; scale*cos(angle)  </span><br><span class="line">\qquad\beta &#x3D; scale*sin(angle)</span><br></pre></td></tr></table></figure>
+<p>在确定旋转矩阵后，通过warpAffine()函数进行仿射变换，就可以实现图像的旋转，<br>仿射变换warpAffine()函数的函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::warpAffine</span><span class="params">(InputArray src,</span></span></span><br><span class="line"><span class="function"><span class="params">                                OutputArray dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                                InputArray M,</span></span></span><br><span class="line"><span class="function"><span class="params">                                Size dsize,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> flags = INTER_LINEAR,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> borderMode = BORDER_CONSTANT,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">const</span> Scalar&amp; borderValue = Scalar())</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>dst：仿射变换后输出图像，与src数据类型一致，尺寸与dsize相同</li>
+<li>M：2x3旋转变换矩阵</li>
+<li>dsize：输出图像尺寸</li>
+<li>flags：插值方法标志，参数含义见表3-3和表3-4</li>
+<li>borderMode：像素边界外推方法的标志</li>
+<li>borderValue：填充边界使用的数值，默认情况下为0</li>
+</ul>
+</blockquote>
+<p>表3-4    图像仿射变换插值方法标志：<br>| 方法标志 |简记  |作用  |<br>| — | — | — |<br>|WARP_FILL_OUTLIERS  |8  |填充所有输出图像的像素，如果部分像素落在输入图像的边界外，则它们的值设定为fillval  |<br>|WARP_INVERSE_MAP  |16  |设置为M输出图像到输入图像的反变换  |</p>
+<p>仿射变换就是图像的旋转、平移和缩放操作的统称，可以表示为线性变换和平移变换的叠加，其数学表示是先乘以一个线性变换矩阵再加上一个平移向量，其中线性变换矩阵为2x2的矩阵A，平移向量为2x1的向量B。旋转变换矩阵M与线性变换矩阵A、平移矩阵B的关系为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">M &#x3D; [A\quad B] &#x3D;\begin&#123;bmatrix&#125;</span><br><span class="line">a_&#123;00&#125; &amp;a_&#123;01&#125; &amp;b_&#123;00&#125;  \\ </span><br><span class="line">a_&#123;10&#125; &amp;a_&#123;11&#125; &amp;b_&#123;10&#125;  </span><br><span class="line">\end&#123;bmatrix&#125;</span><br></pre></td></tr></table></figure>
+<p>用线性变换矩阵A和平移矩阵B，以及图像像素值[x,y]^T，仿射变换的数学原理可以表示为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">T &#x3D; A\begin&#123;bmatrix&#125;</span><br><span class="line">x\\ </span><br><span class="line">y</span><br><span class="line">\end&#123;bmatrix&#125;+B</span><br></pre></td></tr></table></figure>
+<p>T为变换后的像素值。</p>
+<p>仿射变换又称为三点变换。如果知道变换前后两幅图像中3个像素点坐标的对应关系就可以求得仿射变换中的变换矩M。OpenCV4提供了利用3各对应像素点来确定变换矩阵M的函数getAffineTransform(),其原型如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Mat <span class="title">cv::getAffineTransform</span><span class="params">(<span class="keyword">const</span> Point2f src[],</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> Point2f dst[])</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>src[]：原图像中的3个像素坐标</li>
+<li>dst[]：变换后图像中与原图像对应的3个像素坐标</li>
+</ul>
+</blockquote>
+<p>该函数两个输入量都是存放浮点坐标的数组，在生成数组的时候，与像素点的输入顺序无关，但是要保证像素点的对应关系，函数的返回值是一个2x3的Mat类型矩阵。</p>
+<p>以下代码例程实现了图像的旋转以及图像三点映射的仿射变换</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat img = imread(<span class="string">&quot;lena.png&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (img.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请确认图像文件名称是否正确&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Mat rotation0, rotation1, img_warp0, img_warp1;</span><br><span class="line">    <span class="keyword">double</span> angle = <span class="number">30</span>;  <span class="comment">//设置图像旋转的角度</span></span><br><span class="line">    <span class="function">Size <span class="title">dst_size</span><span class="params">(img.rows, img.cols)</span></span>;  <span class="comment">//设置输出图像的尺寸</span></span><br><span class="line">    <span class="function">Point2f <span class="title">center</span><span class="params">(img.rows / <span class="number">2.0</span>, img.cols / <span class="number">2.0</span>)</span></span>;  <span class="comment">//设置图像的旋转中心</span></span><br><span class="line">    rotation0 = getRotationMatrix2D(center, angle, <span class="number">1</span>);  <span class="comment">//计算放射变换矩阵</span></span><br><span class="line">    warpAffine(img, img_warp0, rotation0, dst_size);  <span class="comment">//进行仿射变换</span></span><br><span class="line">    imshow(<span class="string">&quot;img_warp0&quot;</span>, img_warp0);</span><br><span class="line">    <span class="comment">//根据定义的三个点进行仿射变换</span></span><br><span class="line">    Point2f src_points[<span class="number">3</span>];</span><br><span class="line">    Point2f dst_points[<span class="number">3</span>];</span><br><span class="line">    src_points[<span class="number">0</span>] = Point2f(<span class="number">0</span>, <span class="number">0</span>);  <span class="comment">//原始图像中的三个点</span></span><br><span class="line">    src_points[<span class="number">1</span>] = Point2f(<span class="number">0</span>, (<span class="keyword">float</span>)(img.cols - <span class="number">1</span>));</span><br><span class="line">    src_points[<span class="number">2</span>] = Point2f((<span class="keyword">float</span>)(img.rows - <span class="number">1</span>), (<span class="keyword">float</span>)(img.cols - <span class="number">1</span>));</span><br><span class="line">    dst_points[<span class="number">0</span>] = Point2f((<span class="keyword">float</span>)(img.rows)*<span class="number">0.11</span>, (<span class="keyword">float</span>)(img.cols)*<span class="number">0.20</span>);  <span class="comment">//放射变换后图像中的三个点</span></span><br><span class="line">    dst_points[<span class="number">1</span>] = Point2f((<span class="keyword">float</span>)(img.rows)*<span class="number">0.15</span>, (<span class="keyword">float</span>)(img.cols)*<span class="number">0.70</span>);</span><br><span class="line">    dst_points[<span class="number">2</span>] = Point2f((<span class="keyword">float</span>)(img.rows)*<span class="number">0.81</span>, (<span class="keyword">float</span>)(img.cols)*<span class="number">0.85</span>);</span><br><span class="line">    rotation1 = getAffineTransform(src_points, dst_points);  <span class="comment">//根据对应点求取仿射变换矩阵</span></span><br><span class="line">    warpAffine(img, img_warp1, rotation1, dst_size);  <span class="comment">//进行仿射变换</span></span><br><span class="line">    imshow(<span class="string">&quot;img_warp1&quot;</span>, img_warp1);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仿射变换程序运行结果如下图：<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-23.png"></p>
+<h2 id="3-3-4图像透视变换"><a href="#3-3-4图像透视变换" class="headerlink" title="3.3.4图像透视变换"></a>3.3.4图像透视变换</h2><p>透视变换常用在机器人视觉导航研究中，由于相机视角与地面存在倾斜角使得物体成像产生畸变，通过透视变换可以实现对物体图像的校正。</p>
+<p>在透视变换中，变换前后的图像关系可以用一个3x3的变换矩阵表示，该矩阵可以通过两幅图像中4各对应点像素坐标求得，因此透视变换又叫做四点变换。<br>4各对应点坐标求变换矩阵的getPerspectiveTransform()函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Mat <span class="title">cv::getPerspectiveTransform</span><span class="params">(<span class="keyword">const</span> Point2f src[],</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> Point2f dst[],</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">int</span> solveMethod = DECOMP_LU)</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>solveMethod：透视变换矩阵计算方法的标志，默认情况是选择最佳主轴元素的高斯消元法DECOMP_LU，参数含义见表3-6<br>表3-6 透视变换矩阵计算方法的标志</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>标志参数</th>
+<th>简记</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DECOMP_LU</td>
+<td>0</td>
+<td>最佳主轴元素的高斯消元法</td>
+</tr>
+<tr>
+<td>DECOMP_SVD</td>
+<td>1</td>
+<td>奇异值分解（SVD）方法</td>
+</tr>
+<tr>
+<td>DECOMP_EIG</td>
+<td>2</td>
+<td>特征值分解法</td>
+</tr>
+<tr>
+<td>DECOMP_CHOLESKY</td>
+<td>3</td>
+<td>choleskey分解法</td>
+</tr>
+<tr>
+<td>DECOMP_QR</td>
+<td>4</td>
+<td>QR分解法</td>
+</tr>
+<tr>
+<td>DECOMP_NORMAL</td>
+<td>16</td>
+<td>使用正规方程公式，可以与其它标志一起使用</td>
+</tr>
+</tbody></table>
+<p>直接进行透视变换的函数warpPerspective()函数原型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cv::warpPerspective</span><span class="params">(InputArray src,</span></span></span><br><span class="line"><span class="function"><span class="params">                                OutputArray dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                                InputArray M,</span></span></span><br><span class="line"><span class="function"><span class="params">                                Size dsize,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> flags = INTER_LINEAR,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> borderMode = BORDER_CONSTANT,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">const</span> Scalar&amp; borderValue = Scalar())</span></span></span><br></pre></td></tr></table></figure>
+<p>该函数参数含义与warpAffine()函数的参数含义相同，不再赘述。</p>
+<p>以下代码例程给出了将相机视线不垂直于平面拍摄的二维码图像经过透视变换变成相机视线垂直于平面的二维码图像。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2\opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat img = imread(<span class="string">&quot;noobcvqr.png&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (img.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请确认图像文件名称是否正确&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Point2f src_points[<span class="number">4</span>];</span><br><span class="line">    Point2f dst_points[<span class="number">4</span>];</span><br><span class="line">    <span class="comment">//通过Image Watch查看的二维码四个角点坐标</span></span><br><span class="line">    src_points[<span class="number">0</span>] = Point2f(<span class="number">94.0</span>, <span class="number">374.0</span>);</span><br><span class="line">    src_points[<span class="number">1</span>] = Point2f(<span class="number">507.0</span>, <span class="number">380.0</span>);</span><br><span class="line">    src_points[<span class="number">2</span>] = Point2f(<span class="number">1.0</span>, <span class="number">623.0</span>);</span><br><span class="line">    src_points[<span class="number">3</span>] = Point2f(<span class="number">627.0</span>, <span class="number">627.0</span>);</span><br><span class="line">    <span class="comment">//期望透视变换后二维码四个角点的坐标</span></span><br><span class="line">    dst_points[<span class="number">0</span>] = Point2f(<span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">    dst_points[<span class="number">1</span>] = Point2f(<span class="number">627.0</span>, <span class="number">0.0</span>);</span><br><span class="line">    dst_points[<span class="number">2</span>] = Point2f(<span class="number">0.0</span>, <span class="number">627.0</span>);</span><br><span class="line">    dst_points[<span class="number">3</span>] = Point2f(<span class="number">627.0</span>, <span class="number">627.0</span>);</span><br><span class="line">    Mat rotation, img_warp;</span><br><span class="line">    rotation = getPerspectiveTransform(src_points, dst_points);  <span class="comment">//计算透视变换矩阵</span></span><br><span class="line">    warpPerspective(img, img_warp, rotation, img.size());  <span class="comment">//透视变换投影</span></span><br><span class="line">    imshow(<span class="string">&quot;img&quot;</span>, img);</span><br><span class="line">    imshow(<span class="string">&quot;img_warp&quot;</span>, img_warp);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>透视变换的程序效果如下：<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/%E5%9B%BE3-25.png"></p>
 
       
 
@@ -235,15 +418,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">古月居</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">OpenCV</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">MoveIt</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ROS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">OpenCv4快速入门，图像处理，图像变换</a>
         		</li>
       		
 		</ul>
@@ -299,7 +478,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://lowkeng.github.io/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://lowkeng.github.io/2020/08/24/OpenCV4%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -313,18 +492,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          MoveIt编程入门（1）
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MoveIt可视化配置和仿真指南（1）</div>
+    <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%882%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MoveIt编程入门（2）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -351,7 +521,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-MoveIt-Gazebo%E4%BB%BF%E7%9C%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">3.MoveIt + Gazebo仿真配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ros-control"><span class="toc-number">1.1.</span> <span class="toc-text">ros_control</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8demo"><span class="toc-number">1.2.</span> <span class="toc-text">启动demo</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#3-3%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2"><span class="toc-number">1.</span> <span class="toc-text">3.3图像变换</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-1%E5%9B%BE%E5%83%8F%E8%BF%9E%E6%8E%A5"><span class="toc-number">1.1.</span> <span class="toc-text">3.3.1图像连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-2%E5%9B%BE%E5%83%8F%E5%B0%BA%E5%AF%B8%E5%8F%98%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">3.3.2图像尺寸变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-3%E5%9B%BE%E5%83%8F%E7%BF%BB%E8%BD%AC%E5%8F%98%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">3.3.3图像翻转变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-4-%E5%9B%BE%E5%83%8F%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="toc-number">1.4.</span> <span class="toc-text">3.3.4 图像仿射变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-4%E5%9B%BE%E5%83%8F%E9%80%8F%E8%A7%86%E5%8F%98%E6%8D%A2"><span class="toc-number">1.5.</span> <span class="toc-text">3.3.4图像透视变换</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
