@@ -46,9 +46,9 @@ STEP4：创建第一个幻灯片
 > 		<div class="slides">
 > 			<section>如何使用reveal.js创建和演示幻灯片</section>
 > 			<section>第一步：下载reveal.js项目构建创作环境</section>
->                     <section>第二步：熟悉语法规则后进行内容创作</section>
->                     <section>第三步：启动本地服务进行幻灯片演示</section>
->            </div>
+>                  <section>第二步：熟悉语法规则后进行内容创作</section>
+>                  <section>第三步：启动本地服务进行幻灯片演示</section>
+>         </div>
 > </div>
 > ```
 >
