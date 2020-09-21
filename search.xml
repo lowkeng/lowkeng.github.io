@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>MoveIt可视化配置和仿真指南（2）</title>
-    <url>/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="3-MoveIt-Gazebo仿真配置"><a href="#3-MoveIt-Gazebo仿真配置" class="headerlink" title="3.MoveIt + Gazebo仿真配置"></a>3.MoveIt + Gazebo仿真配置</h1><h2 id="ros-control"><a href="#ros-control" class="headerlink" title="ros_control"></a>ros_control</h2><ul>
-<li>控制器管理器<br>提供一种通用的接口来管理不同的控制器</li>
-<li>控制器<br>读取硬件状态，发布控制指令，完成每个joint的控制</li>
-<li>硬件资源<br>为上下两层提供硬件资源的接口</li>
-<li>机器人硬件抽象<br>机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作</li>
-<li>真实机器人<br>执行接收到的命令<a id="more"></a>
-
-</li>
-</ul>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg"><br><img src="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg"></p>
-<center>MoveIt控制框架</center>
-
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg"></p>
-<center>MoveIt+Gazebo仿真框架</center>
-
-<h2 id="启动demo"><a href="#启动demo" class="headerlink" title="启动demo"></a>启动demo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> marm_moveit_config demo_gazebo.launch</span><br></pre></td></tr></table></figure>
-<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg"></p>
-]]></content>
-      <categories>
-        <category>ROS机器人</category>
-      </categories>
-      <tags>
-        <tag>MoveIt</tag>
-        <tag>ROS</tag>
-        <tag>古月居</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MoveIt可视化配置和仿真指南（1）</title>
     <url>/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%881%EF%BC%89/</url>
     <content><![CDATA[<h1 id="1-MoveIt简介"><a href="#1-MoveIt简介" class="headerlink" title="1.MoveIt简介"></a>1.MoveIt简介</h1><p>PR2机器人动态检测到障碍物<br>MoveIt Setup Assistant配置助手<br>Rviz中使用MoveIt插件，对机器人进行plan、stop等控制<br>MoveIt也可以控制夹爪</p>
@@ -65,9 +35,39 @@
         <category>ROS机器人</category>
       </categories>
       <tags>
+        <tag>古月居</tag>
         <tag>MoveIt</tag>
         <tag>ROS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MoveIt可视化配置和仿真指南（2）</title>
+    <url>/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="3-MoveIt-Gazebo仿真配置"><a href="#3-MoveIt-Gazebo仿真配置" class="headerlink" title="3.MoveIt + Gazebo仿真配置"></a>3.MoveIt + Gazebo仿真配置</h1><h2 id="ros-control"><a href="#ros-control" class="headerlink" title="ros_control"></a>ros_control</h2><ul>
+<li>控制器管理器<br>提供一种通用的接口来管理不同的控制器</li>
+<li>控制器<br>读取硬件状态，发布控制指令，完成每个joint的控制</li>
+<li>硬件资源<br>为上下两层提供硬件资源的接口</li>
+<li>机器人硬件抽象<br>机器人硬件抽象和硬件资源直接打交道，通过write和read方法完成硬件操作</li>
+<li>真实机器人<br>执行接收到的命令<a id="more"></a>
+
+</li>
+</ul>
+<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/control.jpg"><br><img src="http://qey02i1ot.hb-bkt.clouddn.com/kongzhi.jpg"></p>
+<center>MoveIt控制框架</center>
+
+<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/fangzhen.jpg"></p>
+<center>MoveIt+Gazebo仿真框架</center>
+
+<h2 id="启动demo"><a href="#启动demo" class="headerlink" title="启动demo"></a>启动demo</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> marm_moveit_config demo_gazebo.launch</span><br></pre></td></tr></table></figure>
+<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/gazebo.jpg"></p>
+]]></content>
+      <categories>
+        <category>ROS机器人</category>
+      </categories>
+      <tags>
         <tag>古月居</tag>
+        <tag>MoveIt</tag>
+        <tag>ROS</tag>
       </tags>
   </entry>
   <entry>
@@ -113,9 +113,9 @@
         <category>ROS机器人</category>
       </categories>
       <tags>
+        <tag>古月居</tag>
         <tag>MoveIt</tag>
         <tag>ROS</tag>
-        <tag>古月居</tag>
       </tags>
   </entry>
   <entry>
@@ -154,9 +154,9 @@
         <category>ROS机器人</category>
       </categories>
       <tags>
+        <tag>古月居</tag>
         <tag>MoveIt</tag>
         <tag>ROS</tag>
-        <tag>古月居</tag>
       </tags>
   </entry>
   <entry>
