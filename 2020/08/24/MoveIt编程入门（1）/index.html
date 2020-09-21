@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="MoveIt编程接口 MoveIt核心节点--move_group   连接控制需要的规划组planning group 设置目标位姿（关节空间或笛卡尔空间） 设置运动约束（可选） 使用MoveIt规划一条到达目标的轨迹 修改轨迹（如速度等参数） 执行规划出的轨迹">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MoveIt编程入门（1）">
+<meta property="og:url" content="http://example.com/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MoveIt编程接口 MoveIt核心节点--move_group   连接控制需要的规划组planning group 设置目标位姿（关节空间或笛卡尔空间） 设置运动约束（可选） 使用MoveIt规划一条到达目标的轨迹 修改轨迹（如速度等参数） 执行规划出的轨迹">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg">
+<meta property="article:published_time" content="2020-08-24T09:28:45.000Z">
+<meta property="article:modified_time" content="2020-09-11T14:12:40.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="古月居">
+<meta property="article:tag" content="MoveIt">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg">
+
+<link rel="canonical" href="http://example.com/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MoveIt编程入门（1） | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%881%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MoveIt编程入门（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-24 17:28:45" itemprop="dateCreated datePublished" datetime="2020-08-24T17:28:45+08:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-11 22:12:40" itemprop="dateModified" datetime="2020-09-11T22:12:40+08:00">2020-09-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MoveIt编程接口"><a href="#MoveIt编程接口" class="headerlink" title="MoveIt编程接口"></a>MoveIt编程接口</h1><p><img src="http://qey02i1ot.hb-bkt.clouddn.com/move_group.jpg"></p>
+<center>MoveIt核心节点--move_group</center>
+
+<ul>
+<li>连接控制需要的规划组planning group</li>
+<li>设置目标位姿（关节空间或笛卡尔空间）</li>
+<li>设置运动约束（可选）</li>
+<li>使用MoveIt规划一条到达目标的轨迹</li>
+<li>修改轨迹（如速度等参数）</li>
+<li>执行规划出的轨迹<a id="more"></a>
+<h1 id="2-关节空间运动"><a href="#2-关节空间运动" class="headerlink" title="2.关节空间运动"></a>2.关节空间运动</h1>点到点运动：不需要在笛卡尔空间规划末端运动轨迹，机器人各个关节运动不需要联动（每个关节的运动是独立规划的）</li>
+</ul>
+<h2 id="第一种方法-设置各个关节点位姿角度"><a href="#第一种方法-设置各个关节点位姿角度" class="headerlink" title="第一种方法 设置各个关节点位姿角度"></a>第一种方法 设置各个关节点位姿角度</h2><p>正向运动学规划例程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> probot_anno_moveit_config demo.launch</span><br><span class="line"><span class="variable">$rosrun</span> probot_demo moveit_fk_demo.py</span><br></pre></td></tr></table></figure>
+<p><code>moveit_fk_demo.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂运动的允许误差值</span></span><br><span class="line">arm.set_goal_joint_tolerance(<span class="number">0.001</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置允许的最大速度和加速度</span></span><br><span class="line">arm.set_max_acceleration_scaling_factor(<span class="number">0.5</span>)</span><br><span class="line">arm.set_max_velocity_scaling_factor(<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂先回到初始化位置</span></span><br><span class="line">arm.set_named_target(<span class="string">&#x27;home&#x27;</span>)</span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂的目标位置，使用六轴的位置数据进行描述（单位：弧度）</span></span><br><span class="line">joint_positions = [<span class="number">0.391410</span>, <span class="number">-0.676384</span>, <span class="number">-0.376217</span>, <span class="number">0.0</span>, <span class="number">1.052834</span>, <span class="number">0.454125</span>]</span><br><span class="line">arm.set_joint_value_target(joint_positions)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂完成运动</span></span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制机械臂先回到初始化位置</span></span><br><span class="line">arm.set_named_target(<span class="string">&#x27;home&#x27;</span>)</span><br><span class="line">arm.go()</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>关键API的实现步骤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"><span class="comment"># 设置机械臂的目标位置，使用六轴的位置数据进行描述（单位：弧度）</span></span><br><span class="line">joint_positions = [<span class="number">0.391410</span>, <span class="number">-0.676384</span>, <span class="number">-0.376217</span>, <span class="number">0.0</span>, <span class="number">1.052834</span>, <span class="number">0.454125</span>]</span><br><span class="line">arm.set_joint_value_target(joint_positions)</span><br><span class="line"><span class="comment"># 控制机械臂完成运动</span></span><br><span class="line">arm.go()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建规划组的控制对象</li>
+<li>设置关节空间运动的目标位姿</li>
+<li>完成规划并控制机械臂完成运动</li>
+</ul>
+<h2 id="第二种方法-设置xyz空间位置"><a href="#第二种方法-设置xyz空间位置" class="headerlink" title="第二种方法 设置xyz空间位置"></a>第二种方法 设置xyz空间位置</h2><p>逆向运动学规划例程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> probot_anno_moveit_config demo.launch</span><br><span class="line"><span class="variable">$rosrun</span> probot_demo moveit_ik_demo.py</span><br></pre></td></tr></table></figure>
+<p><code>moveit_ik_demo.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置机械臂工作空间中的目标位姿，位置使用x、y、z坐标描述，</span></span><br><span class="line"><span class="comment"># 姿态使用四元数描述，基于base_link坐标系</span></span><br><span class="line">target_pose = PoseStamped()</span><br><span class="line">target_pose.header.frame_id = reference_frame</span><br><span class="line">target_pose.header.stamp = rospy.Time.now()     </span><br><span class="line">target_pose.pose.position.x = <span class="number">0.2593</span></span><br><span class="line">target_pose.pose.position.y = <span class="number">0.0636</span></span><br><span class="line">target_pose.pose.position.z = <span class="number">0.1787</span></span><br><span class="line">target_pose.pose.orientation.x = <span class="number">0.70692</span></span><br><span class="line">target_pose.pose.orientation.y = <span class="number">0.0</span></span><br><span class="line">target_pose.pose.orientation.z = <span class="number">0.0</span></span><br><span class="line">target_pose.pose.orientation.w = <span class="number">0.70729</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机器臂当前的状态作为运动初始状态</span></span><br><span class="line">arm.set_start_state_to_current_state()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置机械臂终端运动的目标位姿</span></span><br><span class="line">arm.set_pose_target(target_pose, end_effector_link)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 规划运动路径</span></span><br><span class="line">traj = arm.plan()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照规划的运动路径控制机械臂运动</span></span><br><span class="line">arm.execute(traj)</span><br><span class="line">rospy.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>关键API的实现步骤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化需要使用move group控制的机械臂中的arm group</span></span><br><span class="line">arm = moveit_commander.MoveGroupCommander(<span class="string">&#x27;manipulator&#x27;</span>)</span><br><span class="line"><span class="comment"># 获取终端link的名称</span></span><br><span class="line">end_effector_link = arm.get_end_effector_link()</span><br><span class="line"><span class="comment"># 设置目标位置所使用的参考坐标系</span></span><br><span class="line">reference_frame = <span class="string">&#x27;base_link&#x27;</span></span><br><span class="line">arm.set_pose_reference_frame(reference_frame)</span><br><span class="line"><span class="comment"># 规划运动路径</span></span><br><span class="line">traj = arm.plan()</span><br><span class="line"><span class="comment"># 按照规划的运动路径控制机械臂运动</span></span><br><span class="line">arm.execute(traj)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建运动规划组的控制对象</li>
+<li>获取机器人的终端link名称</li>
+<li>设置目标位姿对应的参考坐标系和起始、终止位姿</li>
+<li>完成规划并控制机械臂完成运动</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8F%A4%E6%9C%88%E5%B1%85/" rel="tag"># 古月居</a>
+              <a href="/tags/MoveIt/" rel="tag"># MoveIt</a>
+              <a href="/tags/ROS/" rel="tag"># ROS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" rel="prev" title="MoveIt可视化配置和仿真指南（2）">
+      <i class="fa fa-chevron-left"></i> MoveIt可视化配置和仿真指南（2）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/24/MoveIt%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%882%EF%BC%89/" rel="next" title="MoveIt编程入门（2）">
+      MoveIt编程入门（2） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MoveIt%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">MoveIt编程接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%85%B3%E8%8A%82%E7%A9%BA%E9%97%B4%E8%BF%90%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">2.关节空间运动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%B3%95-%E8%AE%BE%E7%BD%AE%E5%90%84%E4%B8%AA%E5%85%B3%E8%8A%82%E7%82%B9%E4%BD%8D%E5%A7%BF%E8%A7%92%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text">第一种方法 设置各个关节点位姿角度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95-%E8%AE%BE%E7%BD%AExyz%E7%A9%BA%E9%97%B4%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">第二种方法 设置xyz空间位置</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

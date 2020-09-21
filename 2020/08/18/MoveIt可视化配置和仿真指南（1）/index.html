@@ -20,19 +20,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+  <meta name="description" content="1.MoveIt简介PR2机器人动态检测到障碍物MoveIt Setup Assistant配置助手Rviz中使用MoveIt插件，对机器人进行plan、stop等控制MoveIt也可以控制夹爪">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2020/09/20/hello-world/index.html">
+<meta property="og:title" content="MoveIt可视化配置和仿真指南（1）">
+<meta property="og:url" content="http://example.com/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta property="og:description" content="1.MoveIt简介PR2机器人动态检测到障碍物MoveIt Setup Assistant配置助手Rviz中使用MoveIt插件，对机器人进行plan、stop等控制MoveIt也可以控制夹爪">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-20T15:41:38.924Z">
-<meta property="article:modified_time" content="2020-09-21T09:22:41.914Z">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/assistant.jpg">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/assistant2.jpg">
+<meta property="og:image" content="http://qey02i1ot.hb-bkt.clouddn.com/interact.jpg">
+<meta property="article:published_time" content="2020-08-18T11:14:44.000Z">
+<meta property="article:modified_time" content="2020-09-11T14:12:40.000Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="古月居">
+<meta property="article:tag" content="MoveIt">
+<meta property="article:tag" content="ROS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qey02i1ot.hb-bkt.clouddn.com/assistant.jpg">
 
-<link rel="canonical" href="http://example.com/2020/09/20/hello-world/">
+<link rel="canonical" href="http://example.com/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%881%EF%BC%89/">
 
 
 <script id="page-configurations">
@@ -45,7 +52,7 @@
   };
 </script>
 
-  <title>Hello World | Hexo</title>
+  <title>MoveIt可视化配置和仿真指南（1） | Hexo</title>
   
 
 
@@ -150,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/20/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/18/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%881%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -163,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          MoveIt可视化配置和仿真指南（1）
         </h1>
 
         <div class="post-meta">
@@ -173,14 +180,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-09-20 23:41:38" itemprop="dateCreated datePublished" datetime="2020-09-20T23:41:38+08:00">2020-09-20</time>
+              <time title="Created: 2020-08-18 19:14:44" itemprop="dateCreated datePublished" datetime="2020-08-18T19:14:44+08:00">2020-08-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-21 17:22:41" itemprop="dateModified" datetime="2020-09-21T17:22:41+08:00">2020-09-21</time>
+                <time title="Modified: 2020-09-11 22:12:40" itemprop="dateModified" datetime="2020-09-11T22:12:40+08:00">2020-09-11</time>
               </span>
 
           
@@ -194,21 +201,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+        <h1 id="1-MoveIt简介"><a href="#1-MoveIt简介" class="headerlink" title="1.MoveIt简介"></a>1.MoveIt简介</h1><p>PR2机器人动态检测到障碍物<br>MoveIt Setup Assistant配置助手<br>Rviz中使用MoveIt插件，对机器人进行plan、stop等控制<br>MoveIt也可以控制夹爪</p>
 <a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>一个易于使用的<strong>集成化开发平台/软件框架</strong><br>由一系列<strong>移动操作的功能包</strong>组成</p>
+<blockquote>
+<ul>
+<li>运动规划</li>
+<li>操作控制</li>
+<li>3D感知</li>
+<li>运动学</li>
+<li>控制与导航算法</li>
+<li>……</li>
+</ul>
+</blockquote>
+<p>提供友好的GUI<br>可应用于工业、商业、研发等领域<br>ROS社区使用度排名前三的功能包</p>
+<h1 id="2-MoveIt-Setup-Assistant可视化配置"><a href="#2-MoveIt-Setup-Assistant可视化配置" class="headerlink" title="2.MoveIt Setup Assistant可视化配置"></a>2.MoveIt Setup Assistant可视化配置</h1><p>启动MoveIt Setup Assistant</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> moveit_setup_assistant setup_assistant.launch</span><br></pre></td></tr></table></figure>
+<p>配置步骤1-9：<br><img src="http://qey02i1ot.hb-bkt.clouddn.com/assistant.jpg"><br><img src="http://qey02i1ot.hb-bkt.clouddn.com/assistant2.jpg"></p>
+<blockquote>
+<p>启动Setup Assistant之前要：<br>1). 安装MoveIt功能包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">=  upadate your <span class="built_in">source</span>  =</span><br><span class="line"><span class="variable">$sudo</span> apt-get update</span><br><span class="line">= install moveit =</span><br><span class="line"><span class="variable">$sudo</span> apt-get install ros-melodic-moveit</span><br></pre></td></tr></table></figure>
+<p>2).配置环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$source</span> ~/ros_ws/devel/setup.bash</span><br></pre></td></tr></table></figure>
+<p>不配置环境变量，第一步（1.选择模型）会报错：<br>“Running xacro failed.Please check console for errors.”</p>
+</blockquote>
+<p>启动demo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$roslaunch</span> c800_moveit_config demo.launch</span><br></pre></td></tr></table></figure>
+<p><img src="http://qey02i1ot.hb-bkt.clouddn.com/interact.jpg"></p>
 
     </div>
 
@@ -217,6 +236,11 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8F%A4%E6%9C%88%E5%B1%85/" rel="tag"># 古月居</a>
+              <a href="/tags/MoveIt/" rel="tag"># MoveIt</a>
+              <a href="/tags/ROS/" rel="tag"># ROS</a>
+          </div>
 
         
 
@@ -224,10 +248,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/24/%E4%B8%AD%E7%A7%91%E9%9D%9E%E5%87%A1%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93%E6%96%87%E6%A1%A3/" rel="prev" title="中科非凡实习总结文档">
-      <i class="fa fa-chevron-left"></i> 中科非凡实习总结文档
+    <a href="/2020/08/12/ROS%E6%91%84%E5%83%8F%E5%A4%B4%E9%A9%B1%E5%8A%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/" rel="prev" title="ROS摄像头驱动和数据接口">
+      <i class="fa fa-chevron-left"></i> ROS摄像头驱动和数据接口
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/24/MoveIt%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BB%BF%E7%9C%9F%E6%8C%87%E5%8D%97%EF%BC%882%EF%BC%89/" rel="next" title="MoveIt可视化配置和仿真指南（2）">
+      MoveIt可视化配置和仿真指南（2） <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -286,7 +313,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MoveIt%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">1.MoveIt简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MoveIt-Setup-Assistant%E5%8F%AF%E8%A7%86%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">2.MoveIt Setup Assistant可视化配置</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
