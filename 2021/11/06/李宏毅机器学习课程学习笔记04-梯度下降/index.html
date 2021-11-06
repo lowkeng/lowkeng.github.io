@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>李宏毅机器学习课程学习笔记04 - 梯度下降 | lowkeng's blog</title><meta name="author" content="lowkeng"><meta name="copyright" content="lowkeng"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="01 回顾：Gradient Descent梯度下降，就是求损失函数的一个极小值，optimization problem:$\theta^{*}&#x3D;\arg \min _{\theta} L(\theta)$​​​$L(\theta)$ : Loss Function$\theta$ : 参数 Suppose that $\theta$​ has two variables ${\theta_1,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="李宏毅机器学习课程学习笔记04 - 梯度下降">
+<meta property="og:url" content="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/index.html">
+<meta property="og:site_name" content="lowkeng&#39;s blog">
+<meta property="og:description" content="01 回顾：Gradient Descent梯度下降，就是求损失函数的一个极小值，optimization problem:$\theta^{*}&#x3D;\arg \min _{\theta} L(\theta)$​​​$L(\theta)$ : Loss Function$\theta$ : 参数 Suppose that $\theta$​ has two variables ${\theta_1,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png">
+<meta property="article:published_time" content="2021-11-06T12:57:24.000Z">
+<meta property="article:modified_time" content="2021-11-06T13:38:45.364Z">
+<meta property="article:author" content="lowkeng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李宏毅机器学习课程学习笔记04 - 梯度下降',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-06 21:38:45'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://bityl.co/97sV" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bityl.co/987p')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lowkeng's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">李宏毅机器学习课程学习笔记04 - 梯度下降</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-11-06T12:57:24.000Z" title="Created 2021-11-06 20:57:24">2021-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-11-06T13:38:45.364Z" title="Updated 2021-11-06 21:38:45">2021-11-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="李宏毅机器学习课程学习笔记04 - 梯度下降"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="01-回顾：Gradient-Descent"><a href="#01-回顾：Gradient-Descent" class="headerlink" title="01 回顾：Gradient Descent"></a>01 回顾：Gradient Descent</h2><p>梯度下降，就是求损失函数的一个极小值，optimization problem:<br>$\theta^{*}=\arg \min _{\theta} L(\theta)$​​​<br>$L(\theta)$ : Loss Function<br>$\theta$ : 参数</p>
+<p>Suppose that $\theta$​ has two variables ${\theta_1, \theta_2}$​<br>Randomly start at $\theta^{0}=\left[\begin{array}{l}\theta_{1}^{0} \ \theta_{2}^{0}\end{array}\right]$​</p>
+<p>开始迭代<br>$$<br>\left[\begin{array}{l}<br>\theta_{1}^{1} \<br>\theta_{2}^{1}<br>\end{array}\right]=\left[\begin{array}{l}<br>\theta_{1}^{0} \<br>\theta_{2}^{0}<br>\end{array}\right]-\eta\left[\begin{array}{l}<br>\partial L\left(\theta_{1}^{0}\right) / \partial \theta_{1} \<br>\partial L\left(\theta_{2}^{0}\right) / \partial \theta_{2}<br>\end{array}\right]<br>$$</p>
+<p>$$<br>\left[\begin{array}{l}<br>\theta_{1}^{2} \<br>\theta_{2}^{2}<br>\end{array}\right]=\left[\begin{array}{l}<br>\theta_{1}^{1} \<br>\theta_{2}^{1}<br>\end{array}\right]-\eta\left[\begin{array}{l}<br>\partial L\left(\theta_{1}^{1}\right) / \partial \theta_{1} \<br>\partial L\left(\theta_{2}^{1}\right) / \partial \theta_{2}<br>\end{array}\right]<br>$$</p>
+<p>引入梯度算子$\nabla L(\theta)$​<br>$$<br>\nabla L(\theta)=\left[\begin{array}{l}<br>\partial L\left(\theta_{1}\right) / \partial \theta_{1} \<br>\partial L\left(\theta_{2}\right) / \partial \theta_{2}<br>\end{array}\right]<br>$$<br>得到迭代过程的简写式<br>$$<br>\theta^{1}=\theta^{0}-\eta \nabla L\left(\theta^{0}\right)\<br>\theta^{2}=\theta^{1}-\eta \nabla L\left(\theta^{1}\right)<br>$$<br>其实梯度下降算法本质是一种一阶迭代优化算法，用于寻找可微函数的局部最小值。 其思想是在当前点函数的梯度（或近似梯度）的相反方向上重复步骤，因为这是最速下降的方向。 相反，在梯度方向上步进将导致该函数的局部最大值； 这个过程被称为梯度上升。而我们在机器学习领域中，常用这种算法来使损失函数降到最小，从而得到我们想要的模型<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="阿一的博客 |[《机器学习》——李宏毅 学习笔记（三）](https://ayispace.github.io/2021/10/15/Gradient%20Descent/)
+">[1]</span></a></sup>。</p>
+<h2 id="02-调整学习率-eta-​"><a href="#02-调整学习率-eta-​" class="headerlink" title="02 调整学习率$\eta$​"></a>02 调整学习率$\eta$​</h2><h3 id="自适应学习率Adative-Learning-Rate"><a href="#自适应学习率Adative-Learning-Rate" class="headerlink" title="自适应学习率Adative Learning Rate"></a>自适应学习率Adative Learning Rate</h3><ol>
+<li><p>At the beginning, we are far from the destination, so we use larger learning rate</p>
+</li>
+<li><p>After several epochs, we are close to the destination, so we reduce the learning rate</p>
+<p>e.g. $1/t$ decay: $\eta^t = \frac {\eta}{\sqrt{t+1}}$</p>
+</li>
+</ol>
+<p>为了解决学习率不合适的问题，我们提出一种<strong>自适应学习率的算法</strong>。很明显我们希望在一开始学习率可以大点，在快接近极值点的时候学习率可以小点，所以我们让学习率随着迭代次数的增加而逐渐减小。</p>
+<ol start="3">
+<li>Give different parameters different learning rates  $\rightarrow$​ <strong>Adagrad</strong></li>
+</ol>
+<p> 除此之外还有Adagrad算法，同样的，我们需要动态调整学习率，对于Adagrad算法来说，<strong>设置全局学习率之后，每次使全局学习率逐参数的除以历史梯度平方和的平方根，使得每个参数的学习率不同</strong>。</p>
+<h3 id="Adagrad梯度下降算法"><a href="#Adagrad梯度下降算法" class="headerlink" title="Adagrad梯度下降算法"></a>Adagrad梯度下降算法</h3><p>Divide the learning rate of each parameter by the  <strong>root mean square of its previous derivatives</strong> 通过之前求导的值的均方根划分每个参数的学习率<br>$$<br>w^{t+1} \leftarrow w^{t}-\frac{\eta^{t}}{\sigma^{t}} g^{t}<br>$$<br>$\sigma^t$: root mean square of its previous derivatives<br>$$<br>\begin{aligned}<br> w^{1} \leftarrow w^{0}-\frac{\eta^{0}}{\sigma^{0}} g^{0}\quad&amp;\quad   \sigma^{0}=\sqrt{\left(g^{0}\right)^{2}}\\<br>w^{2} \leftarrow w^{1}-\frac{\eta^{1}}{\sigma^{1}} g^{1}  \quad&amp;\quad \sigma^{1}=\sqrt{\frac{1}{2}\left[\left(g^{0}\right)^{2}+\left(g^{1}\right)^{2}\right]}\\<br> w^{3} \leftarrow w^{2}-\frac{\eta^{2}}{\sigma^{2}} g^{2} \quad &amp;\quad\sigma^{2}=\sqrt{\frac{1}{3}\left[\left(g^{0}\right)^{2}+\left(g^{1}\right)^{2}+\left(g^{2}\right)^{2}\right]} \\<br>\vdots \quad&amp;\quad \vdots \\<br>w^{t+1} \leftarrow w^{t}-\frac{\eta^{t}}{\sigma^{t}} g^{t} \quad&amp;\quad \sigma^{t}=\sqrt{\frac{1}{t+1} \sum_{i=0}^{t}\left(g^{i}\right)^{2}}<br>\end{aligned}<br>$$<br><img src="https://i.loli.net/2021/10/19/lNxr3Um9Eg2RdTf.png" alt="image-20211019140625459"></p>
+<h2 id="03-随机梯度下降（SGD"><a href="#03-随机梯度下降（SGD" class="headerlink" title="03 随机梯度下降（SGD)"></a>03 随机梯度下降（SGD)</h2><p>一般而言，梯度下降是over all training examples<br>$$<br>L=\sum_{n}\left(\hat{y}^{n}-\left(b+\sum w_{i} x_{i}^{n}\right)\right)^{2} \quad \theta^{i}=\theta^{i-1}-\eta \nabla L\left(\theta^{i-1}\right)<br>$$<br>随机梯度下降，是pick一个example： ${\color{red} x^n \rightarrow L^n}$<br>$$<br>{\color{red}L^n}=\left(\hat{y}^{n}-\left(b+\sum w_{i} x_{i}^{n}\right)\right)^{2} \quad \theta^{i}=\theta^{i-1}-\eta \nabla {\color{red}L^n}\left(\theta^{i-1}\right)<br>$$</p>
+<h2 id="04-特征缩放Feature-Scaling-Normalization"><a href="#04-特征缩放Feature-Scaling-Normalization" class="headerlink" title="04 特征缩放Feature Scaling/Normalization"></a>04 特征缩放Feature Scaling/Normalization</h2><p>特征缩放又叫叫做标准化，标准化的东西是数据特征的范围。在梯度下降法中，当有多个特征向量的时候，如果其中一个变化范围比较大，梯度下降过程的收敛速度会变慢。</p>
+<p>比如有个函数：$y = b+w_1x_1+w_2x_2$,两个输入的分布的范围很不一样，建议把他们的范围缩放，使得不同输入的范围是一样的。</p>
+<p><img src="https://i.loli.net/2021/10/19/Hfogduxn3AaQOq8.png" alt="image-20211019144621097"></p>
+<center>Make different features have the same scaling</center>
+
+<p>特征缩放的方法有很多：例如</p>
+<ul>
+<li><p>Min-Max Scaling，就是将数据压缩至0~1之间，是当有新数据加入时, 可能导致和 发生变化， 所以这种算法对数据非常敏感；</p>
+</li>
+<li><p>z值归一化：将数值缩放到0附近，且数据的分布变为均值为0，标准差为1的标准正态分布等方法。</p>
+<div class="note modern"><p>For each dimension $i$: <br>&nbsp;&nbsp;&nbsp;&nbsp;  mean: $m_i$ <br> &nbsp;&nbsp;&nbsp;&nbsp;      standard variance: $\sigma_i$​<br>    $$<br>    x_{i}^{r} \leftarrow \frac{x_{i}^{r}-m_{i}}{\sigma_{i}}<br>    $$</p>
+</div>
+
+<p><img src="https://i.loli.net/2021/10/20/9sXAyphJRmWw5rq.png" alt="image-20211020221713139"></p>
+</li>
+</ul>
+<h2 id="05-梯度下降的理论基础"><a href="#05-梯度下降的理论基础" class="headerlink" title="05 梯度下降的理论基础"></a>05 梯度下降的理论基础</h2><h3 id="泰勒级数Taylor-Series"><a href="#泰勒级数Taylor-Series" class="headerlink" title="泰勒级数Taylor Series"></a>泰勒级数Taylor Series</h3><p>Let $h(x)$​ be any function infinitely differentiable around  $x=x_0$​ 如果函数$h(x)$​在$x=x_0$​​无限可导<br>$$<br>\begin{aligned}<br>\mathrm{h}(\mathrm{x}) &amp;=\sum_{k=0}^{\infty} \frac{\mathrm{h}^{(k)}\left(x_{0}\right)}{k !}\left(x-x_{0}\right)^{k} \\<br>&amp;=h\left(x_{0}\right)+h^{\prime}\left(x_{0}\right)\left(x-x_{0}\right)+\frac{h^{\prime \prime}\left(x_{0}\right)}{2 !}\left(x-x_{0}\right)^{2}+\ldots<br>\end{aligned}<br>$$<br>对$x_0$附近的$x$，有 $h(x) \approx h\left(x_{0}\right)+h^{\prime}\left(x_{0}\right)\left(x-x_{0}\right)$</p>
+<p>e.g. Taylor series for $h(x)=sin(x)$ around $x_0=π/4$<br>                 <img src="https://i.loli.net/2021/10/19/AMibm8BygpQdh9n.png" alt="image-20211019150918061" style="zoom:80%;" /></p>
+<h3 id="基于Taylor-Series推导局部范围Gradient-Descent"><a href="#基于Taylor-Series推导局部范围Gradient-Descent" class="headerlink" title="基于Taylor Series推导局部范围Gradient Descent"></a>基于Taylor Series推导局部范围Gradient Descent</h3><p><img src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" alt="image-20211019152231140"></p>
+<p>If the red circle is <strong>small enough</strong>, in the red circle:<br>$$<br>\mathrm{L}(\theta) \approx \mathrm{L}(a, b)+\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{1}}\left(\theta_{1}-a\right)+\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{2}}\left(\theta_{2}-b\right)<br>$$<br>令$s=\mathrm{L}(a, b) \quad u=\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{1}}, v=\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{2}}$<br>$$<br>\begin{aligned}<br>\mathrm{L}(\theta)\approx s+u\left(\theta_{1}-a\right)+v\left(\theta_{2}-b\right)<br>\end{aligned}<br>$$</p>
+<div class="note no-icon success modern"><p>$$<br>\begin{aligned}<br>\Delta\theta_1 &amp;= \theta_1-a,\Delta\theta_2 = \theta_2-b\\<br>L(\theta) &amp;\approx s+u\Delta\theta_1 +v\Delta\theta_2\\<br>L(\theta) -s&amp;\approx  u\Delta\theta_1 +v\Delta\theta_2\\<br>&amp; \approx (u,v) \cdot (\Delta\theta_1,\Delta\theta_2)<br>\end{aligned}<br>$$</p>
+<p>Find $\theta_1$​and $\theta_2$​ in the red circle <strong>minimizing</strong> $L(\theta)$​​ :</p>
+<p>$$<br>\begin{aligned}<br>\left(\theta_{1}-a\right)^{2}+\left(\theta_{2}-b\right)^{2} &amp;\leq d^{2}\<br>\Delta\theta_1^2+\Delta\theta_2^2 &amp;\leq d^2<br>\end{aligned}<br>$$</p>
+<p>Given $L(\theta) ’ \approx (u,v) \cdot (\Delta\theta_1,\Delta\theta_2)$​, to minimize $L(\theta)$:</p>
+<p>$$<br>\left[\begin{array}{l}<br>\Delta \theta_{1} \<br>\Delta \theta_{2}<br>\end{array}\right]=-\eta\left[\begin{array}{l}<br>u \<br>v<br>\end{array}\right] \rightarrow\left[\begin{array}{l}<br>\theta_{1} \<br>\theta_{2}<br>\end{array}\right]=\left[\begin{array}{l}<br>a \<br>b<br>\end{array}\right]-\eta\left[\begin{array}{l}<br>u \<br>v<br>\end{array}\right]=\left[\begin{array}{l}<br>a \<br>b<br>\end{array}\right]-\eta\left[\begin{array}{c}<br>{\color{red}\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{1}}} \<br>{\color{red}\frac{\partial \mathrm{L}(a, b)}{\partial \theta_{2}}}<br>\end{array}\right]<br>$$</p>
+</div>
+
+
+
+<p>用这种方法找到这个式子有个前提，泰勒展开式给的损失函数的估算值是要足够精确的，而这需要红色的圈圈足够小（也就是学习率足够小）来保证。所以理论上每次更新参数都想要损失函数减小的话，就需要学习率足够足够小才可以</p>
+<p><strong>Gradient Descent的Limitation</strong>：梯度为0的点——最小值，极小值，鞍点<br>几乎不存在找到鞍点的可能，除非很碰巧，因为梯度下降是对损失函数每个维度分别求极小值；然后是最小值和极小值，如果是<strong>凸函数</strong>，梯度下降会收敛到最小值，因为只有一个极小值，它就是最小值<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="知乎回答 | [如何理解随机梯度下降（stochastic gradient descent](https://www.zhihu.com/question/264189719/answer/291167114)">[2]</span></a></sup>。</p>
+<p><strong>Reference</strong></p>
+<ol>
+<li>B站Datawhale:<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ht411g7Ef?p=6&spm_id_from=pageDriver">李宏毅《机器学习》2017-梯度下降</a></li>
+<li>Datawhale出品:<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/leeml-notes/#/?id=%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0leeml-notes">李宏毅机器学习笔记(LeeML-Notes)</a></li>
+</ol>
+<p><strong>Footnote</strong></p>
+<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">阿一的博客 |<a target="_blank" rel="noopener" href="https://ayispace.github.io/2021/10/15/Gradient%20Descent/">《机器学习》——李宏毅 学习笔记（三）</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">知乎回答 | <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/264189719/answer/291167114">如何理解随机梯度下降（stochastic gradient descent</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/">lowkeng</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/">https://lowkeng.github.io/2021/11/06/李宏毅机器学习课程学习笔记04-梯度下降/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6169756e1688c51f" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"><img class="prev-cover" src="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/"><img class="next-cover" src="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">李宏毅机器学习课程学习笔记03 - 误差</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://bityl.co/97sV" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lowkeng</div><div class="author-info__description">桃李春风一杯酒，江湖夜雨十年灯</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lowkeng" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:cnstevenluo@gmail.com@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/8877404" target="_blank" title="Bilibili"><i class="fas fa-tv"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#01-%E5%9B%9E%E9%A1%BE%EF%BC%9AGradient-Descent"><span class="toc-text">01 回顾：Gradient Descent</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#02-%E8%B0%83%E6%95%B4%E5%AD%A6%E4%B9%A0%E7%8E%87-eta-%E2%80%8B"><span class="toc-text">02 调整学习率$\eta$​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%AD%A6%E4%B9%A0%E7%8E%87Adative-Learning-Rate"><span class="toc-text">自适应学习率Adative Learning Rate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Adagrad%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="toc-text">Adagrad梯度下降算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#03-%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%EF%BC%88SGD"><span class="toc-text">03 随机梯度下降（SGD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#04-%E7%89%B9%E5%BE%81%E7%BC%A9%E6%94%BEFeature-Scaling-Normalization"><span class="toc-text">04 特征缩放Feature Scaling&#x2F;Normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#05-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"><span class="toc-text">05 梯度下降的理论基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%B0%E5%8B%92%E7%BA%A7%E6%95%B0Taylor-Series"><span class="toc-text">泰勒级数Taylor Series</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8ETaylor-Series%E6%8E%A8%E5%AF%BC%E5%B1%80%E9%83%A8%E8%8C%83%E5%9B%B4Gradient-Descent"><span class="toc-text">基于Taylor Series推导局部范围Gradient Descent</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络"><img src="https://i.loli.net/2021/11/04/2mJUNATi7PI8Vda.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记07 - 卷积神经网络"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络">李宏毅机器学习课程学习笔记07 - 卷积神经网络</a><time datetime="2021-11-06T13:55:01.000Z" title="Created 2021-11-06 21:55:01">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"><img src="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播">李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播</a><time datetime="2021-11-06T13:25:31.000Z" title="Created 2021-11-06 21:25:31">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降"><img src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记04 - 梯度下降"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降">李宏毅机器学习课程学习笔记04 - 梯度下降</a><time datetime="2021-11-06T12:57:24.000Z" title="Created 2021-11-06 20:57:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差"><img src="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记03 - 误差"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差">李宏毅机器学习课程学习笔记03 - 误差</a><time datetime="2021-11-06T12:25:24.000Z" title="Created 2021-11-06 20:25:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression"><img src="https://i.loli.net/2021/10/18/RqClW8OB4dn7FoU.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记02 - 回归Regression"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression">李宏毅机器学习课程学习笔记02 - 回归Regression</a><time datetime="2021-11-06T10:51:13.000Z" title="Created 2021-11-06 18:51:13">2021-11-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By lowkeng</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

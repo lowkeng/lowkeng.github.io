@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>李宏毅机器学习课程学习笔记03 - 误差 | lowkeng's blog</title><meta name="author" content="lowkeng"><meta name="copyright" content="lowkeng"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="01 误差的来源error due to “bias”error due to “variance” A more complex model does not always lead to better performance on testing data.  A variable $x$, assume the mean of $x$ is $\mu$, and assume the var">
+<meta property="og:type" content="article">
+<meta property="og:title" content="李宏毅机器学习课程学习笔记03 - 误差">
+<meta property="og:url" content="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/index.html">
+<meta property="og:site_name" content="lowkeng&#39;s blog">
+<meta property="og:description" content="01 误差的来源error due to “bias”error due to “variance” A more complex model does not always lead to better performance on testing data.  A variable $x$, assume the mean of $x$ is $\mu$, and assume the var">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png">
+<meta property="article:published_time" content="2021-11-06T12:25:24.000Z">
+<meta property="article:modified_time" content="2021-11-06T12:54:29.500Z">
+<meta property="article:author" content="lowkeng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李宏毅机器学习课程学习笔记03 - 误差',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-06 20:54:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://bityl.co/97sV" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bityl.co/987p')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lowkeng's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">李宏毅机器学习课程学习笔记03 - 误差</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-11-06T12:25:24.000Z" title="Created 2021-11-06 20:25:24">2021-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-11-06T12:54:29.500Z" title="Updated 2021-11-06 20:54:29">2021-11-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="李宏毅机器学习课程学习笔记03 - 误差"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="01-误差的来源"><a href="#01-误差的来源" class="headerlink" title="01 误差的来源"></a>01 误差的来源</h2><p>error due to <font color=green>“bias”</font><br>error due to <font color=red>“variance”</font></p>
+<p>A more complex model does not always lead to better performance on <strong>testing data</strong>. </p>
+<p>A variable <font color=red>$x$</font>, assume the mean of <font color=red>$x$</font> is $\mu$, and assume the variance of <font color=red>$x$</font> is $\sigma^2$</p>
+<h3 id="对均值-mu-参数估计Estimator-of-mean-mu"><a href="#对均值-mu-参数估计Estimator-of-mean-mu" class="headerlink" title="对均值$\mu$参数估计Estimator of mean $\mu$"></a>对均值$\mu$参数估计Estimator of mean $\mu$</h3><p>采样N个值${x^1, x^2,…, x^N} $,<br>    $m=\frac{1}{N} \sum_{n} x^{n} \neq \mu$</p>
+<p>$$<br>    E[m]=E\left[\frac{1}{N} \sum_{n} x^{n}\right]=\frac{1}{N} \sum_{n} E\left[x^{n}\right]=\mu \\<br>    \operatorname{Var}[m]=\frac{\sigma^{2}}{N}<br>$$</p>
+<p><font color=red>m是对$\mu$的无偏估计,unbiased estimator</font></p>
+<p><img src="https://i.loli.net/2021/10/18/n8ovORkyYQIfqFj.png" alt="image-20211018171634319"></p>
+<center>Variance depends on the number of samples</center>
+
+<h3 id="对方差-sigma-2-参数估计Estimator-of-variance-sigma-2"><a href="#对方差-sigma-2-参数估计Estimator-of-variance-sigma-2" class="headerlink" title="对方差$\sigma^2$参数估计Estimator of variance $\sigma^2$"></a>对方差$\sigma^2$参数估计Estimator of variance $\sigma^2$</h3><p>采样N个值${x^1, x^2,…, x^N} $,<br>$m=\frac{1}{N} \sum_{n}$<br>$$<br>s^{2}=\frac{1}{N} \sum_{n}\left(x^{n}-m\right)^{2}\<br>E[s^2]=\frac{N-1}{N} \sigma^{2} \neq \sigma^{2}<br>$$<br><font color=red>$s^2$是对的$\sigma^2$有偏估计,biased estimator</font></p>
+<p><img src="https://i.loli.net/2021/10/18/gyBx49IsSRHplbC.png" alt="image-20211018173541807"></p>
+<h3 id="Bias-VS-Varience"><a href="#Bias-VS-Varience" class="headerlink" title="Bias VS Varience"></a>Bias VS Varience</h3><p>在林轩田的课中，对bias和variance还有这样一种解释，不用数学公式抽象的简单概括一下<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="知乎Answer | [理解机器学习中的Bias和Varience的折衷关系](https://www.zhihu.com/question/27068705/answer/137487142)
+">[1]</span></a></sup>：</p>
+<blockquote>
+<p>我们训练模型最终目的是为了让这个模型再测试数据上也有好的拟合效果,也就是error(Test)相对小。那要让测试误差小，而测试数据通常是未知的，我们还是得通过训练数据的来移花接木：</p>
+<ol>
+<li>尽可能减小error(Train)</li>
+<li>让error(Test)尽可能接近error(Train)</li>
+</ol>
+<p>第一步，为了减小error(Train)，<b><font color=red>low bias</font></b> $\leftarrow$ 模型复杂化，增加参数（这个好理解，多元线性回归error肯定要比二元线性回归低）<br>这样容易过拟合 (overfitting)，对应下图的右上</p>
+<p>第二步，error(Test)尽可能接近error(Train)是指模型没有偏见，一视同仁，具有通用性，对局部数据不敏感<b><font color=red>low variance</font></b> $\leftarrow$ 减少参数，简化模型<br>这样容易欠拟合(unfitting)，对应下图的左下</p>
+</blockquote>
+<p>李宏毅的比喻，Bias是瞄不准，而variance是手不稳。low bias对应就是点都打在靶心附近，所以瞄的是准的，但手不一定稳；low variance对应就是点都打的很集中，但不一定是靶心附近，手很稳，但是瞄的不准。</p>
+<img src="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png" alt="image-20211018180417999" style="zoom:80%;" />
+
+<p><strong>large bias</strong> –  simple model, few features –  underfitting</p>
+<blockquote>
+<p>for large bias, resign your model</p>
+<ul>
+<li>add more features as input</li>
+<li>a more complex model</li>
+</ul>
+</blockquote>
+<p><strong>large variance</strong> – overfitting</p>
+<blockquote>
+<p>for large variance</p>
+<ul>
+<li>more data (very effective,but not always practical)</li>
+<li>Regulation (may increase bias)</li>
+</ul>
+</blockquote>
+<h2 id="02-Model-Selection"><a href="#02-Model-Selection" class="headerlink" title="02 Model Selection"></a>02 Model Selection</h2><p>There is usually a trade-off between bias and variance.Select a model that balances two kinds of error to minimize total error</p>
+<p><img src="https://i.loli.net/2021/10/18/1rY7RsIWTuJAbX9.png" alt="image-20211018193755773"></p>
+<h3 id="交叉验证Cross-validation"><a href="#交叉验证Cross-validation" class="headerlink" title="交叉验证Cross validation"></a>交叉验证Cross validation</h3><p>交叉验证法，我们把训练集中的数据拿出一部分用来作为验证集，剩下的作为训练集跑出几个模型，然后在验证集上找到表现最好的，再把验证集和训练集合并成训练集训练一下表现最好的模型。最后得到的模型就是我们要的。(就算此时模型表现得不是很好也不推荐回头再调了)<sup id="fnref:2"><a href="#fn:2" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="阿一的博客 |[《机器学习》——李宏毅 学习笔记（三）](https://ayispace.github.io/2021/10/15/Gradient%20Descent/)">[2]</span></a></sup></p>
+<p><img src="https://i.loli.net/2021/10/18/B4z1rdJvcptfPTn.png" alt="image-20211018194255785"></p>
+<h3 id="N-fold-Cross-Validation"><a href="#N-fold-Cross-Validation" class="headerlink" title="N-fold Cross Validation"></a>N-fold Cross Validation</h3><p>N折交叉验证，这里我们会把训练集分为N份，然后每份都要做一次验证集，剩下的做训练集，这样每个模型都会跑N次，最后每个模型的表现取平均值，选取效果最好的那个。</p>
+<p><img src="https://i.loli.net/2021/10/18/UtMfki5RvboS9uT.png" alt="image-20211018194814842"></p>
+<p><strong>Reference</strong></p>
+<ol>
+<li>B站Datawhale:<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ht411g7Ef?p=5&spm_id_from=pageDriver">李宏毅《机器学习》2017-误差</a></li>
+<li>Datawhale出品:<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/leeml-notes/#/?id=%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0leeml-notes">李宏毅机器学习笔记(LeeML-Notes)</a></li>
+</ol>
+<p><strong>Footnote</strong></p>
+<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">知乎Answer | <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27068705/answer/137487142">理解机器学习中的Bias和Varience的折衷关系</a><a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">阿一的博客 |<a target="_blank" rel="noopener" href="https://ayispace.github.io/2021/10/15/Gradient%20Descent/">《机器学习》——李宏毅 学习笔记（三）</a><a href="#fnref:2" rev="footnote"> ↩</a></span></li></ol></div></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/">lowkeng</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/">https://lowkeng.github.io/2021/11/06/李宏毅机器学习课程学习笔记03-误差/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6169756e1688c51f" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/"><img class="prev-cover" src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">李宏毅机器学习课程学习笔记04 - 梯度下降</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/"><img class="next-cover" src="https://i.loli.net/2021/10/18/RqClW8OB4dn7FoU.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">李宏毅机器学习课程学习笔记02 - 回归Regression</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://bityl.co/97sV" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lowkeng</div><div class="author-info__description">桃李春风一杯酒，江湖夜雨十年灯</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lowkeng" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:cnstevenluo@gmail.com@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/8877404" target="_blank" title="Bilibili"><i class="fas fa-tv"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#01-%E8%AF%AF%E5%B7%AE%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="toc-text">01 误差的来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%9D%87%E5%80%BC-mu-%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1Estimator-of-mean-mu"><span class="toc-text">对均值$\mu$参数估计Estimator of mean $\mu$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%96%B9%E5%B7%AE-sigma-2-%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1Estimator-of-variance-sigma-2"><span class="toc-text">对方差$\sigma^2$参数估计Estimator of variance $\sigma^2$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bias-VS-Varience"><span class="toc-text">Bias VS Varience</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#02-Model-Selection"><span class="toc-text">02 Model Selection</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81Cross-validation"><span class="toc-text">交叉验证Cross validation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#N-fold-Cross-Validation"><span class="toc-text">N-fold Cross Validation</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络"><img src="https://i.loli.net/2021/11/04/2mJUNATi7PI8Vda.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记07 - 卷积神经网络"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络">李宏毅机器学习课程学习笔记07 - 卷积神经网络</a><time datetime="2021-11-06T13:55:01.000Z" title="Created 2021-11-06 21:55:01">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"><img src="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播">李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播</a><time datetime="2021-11-06T13:25:31.000Z" title="Created 2021-11-06 21:25:31">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降"><img src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记04 - 梯度下降"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降">李宏毅机器学习课程学习笔记04 - 梯度下降</a><time datetime="2021-11-06T12:57:24.000Z" title="Created 2021-11-06 20:57:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差"><img src="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记03 - 误差"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差">李宏毅机器学习课程学习笔记03 - 误差</a><time datetime="2021-11-06T12:25:24.000Z" title="Created 2021-11-06 20:25:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression"><img src="https://i.loli.net/2021/10/18/RqClW8OB4dn7FoU.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记02 - 回归Regression"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression">李宏毅机器学习课程学习笔记02 - 回归Regression</a><time datetime="2021-11-06T10:51:13.000Z" title="Created 2021-11-06 18:51:13">2021-11-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By lowkeng</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

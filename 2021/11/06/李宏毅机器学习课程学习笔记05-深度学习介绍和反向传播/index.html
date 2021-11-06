@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播 | lowkeng's blog</title><meta name="author" content="lowkeng"><meta name="copyright" content="lowkeng"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="01深度学习介绍Three Steps for Deep Learning    NN模型 $\rightarrow$ 模型评估  $\rightarrow$​ 选择最优函数   AlexNet(2012) VGG(2014) GoogleNet(2014) ResidualNet(2015)   Output Layer：multi-class classifier  02 反向传播Back P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播">
+<meta property="og:url" content="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/index.html">
+<meta property="og:site_name" content="lowkeng&#39;s blog">
+<meta property="og:description" content="01深度学习介绍Three Steps for Deep Learning    NN模型 $\rightarrow$ 模型评估  $\rightarrow$​ 选择最优函数   AlexNet(2012) VGG(2014) GoogleNet(2014) ResidualNet(2015)   Output Layer：multi-class classifier  02 反向传播Back P">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png">
+<meta property="article:published_time" content="2021-11-06T13:25:31.000Z">
+<meta property="article:modified_time" content="2021-11-06T13:47:43.200Z">
+<meta property="article:author" content="lowkeng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-06 21:47:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://bityl.co/97sV" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lowkeng's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas toc"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-11-06T13:25:31.000Z" title="Created 2021-11-06 21:25:31">2021-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-11-06T13:47:43.200Z" title="Updated 2021-11-06 21:47:43">2021-11-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="01深度学习介绍"><a href="#01深度学习介绍" class="headerlink" title="01深度学习介绍"></a>01深度学习介绍</h2><p><strong>Three Steps for Deep Learning</strong></p>
+<p>   NN模型 $\rightarrow$ 模型评估  $\rightarrow$​ 选择最优函数</p>
+<p><img src="https://i.loli.net/2021/10/19/OKZvXHu2GwVyRhE.png" alt="image-20211019164213155"></p>
+<ul>
+<li>AlexNet(2012)</li>
+<li>VGG(2014)</li>
+<li>GoogleNet(2014)</li>
+<li>ResidualNet(2015)</li>
+</ul>
+<p><img src="https://i.loli.net/2021/10/19/viQlXqWCFeBfRsg.png" alt="image-20211019171840722"></p>
+<p><strong>Output Layer：multi-class classifier</strong></p>
+<p><img src="https://i.loli.net/2021/10/19/4XN8B2JPeRankOr.png" alt="image-20211019165802423"></p>
+<h2 id="02-反向传播Back-Propagation"><a href="#02-反向传播Back-Propagation" class="headerlink" title="02 反向传播Back Propagation"></a>02 反向传播Back Propagation</h2><p>回顾Gradient Dscent，model parameters $\theta= \left\{  w_{1}, w_{2}, \cdots, b_{1}, b_{2}, \cdots\right \}$ ，start parameters $\theta^0$​​​=$ \{ w_0,b_0 \}$<br>$$<br>\begin{matrix}<br>\nabla \mathrm{L}(\theta)=\left[\begin{array}{c}<br>\partial \mathrm{L}(\theta) / \partial w_{1} \\<br>\partial \mathrm{L}(\theta) / \partial w_{2} \\<br>\vdots \\<br>\\<br>\partial \mathrm{L}(\theta) / \partial b_{1} \\<br>\partial \mathrm{L}(\theta) / \partial b_{2} \\<br>\vdots<br>\end{array}\right]<br>&amp; \begin{matrix}<br>\theta^{0} \longrightarrow \theta^{1} \longrightarrow \theta^{2} \longrightarrow \cdots\\<br>\\<br>\\<br>\\<br>Compute \nabla \mathrm{L}\left(\theta^{0}\right) \quad \theta^{1}=\theta^{0}-\eta \nabla \mathrm{L}\left(\theta^{0}\right)\\<br>\\<br>Compute \nabla \mathrm{L}\left(\theta^{1}\right) \quad \theta^{2}=\theta^{1}-\eta \nabla \mathrm{L}\left(\theta^{1}\right)<br>\end{matrix}<br>\end{matrix}<br>$$<br>To compute the gradients efficiently， we use <strong>backpropagation</strong>.</p>
+<p>链式求导法则 </p>
+<div class="note no-icon success modern"><p><strong>case 1</strong></p>
+<p>​                  <center> $y=g(x) \quad z=h(y)$​​​​ </center><br>$$<br>\Delta x \rightarrow \Delta y \rightarrow \Delta z \quad \quad \quad\quad \quad \quad\quad \quad \quad\frac{d z}{d x}=\frac{d z}{d y} \frac{d y}{d x}<br>$$<br><strong>case2</strong></p>
+<p>​                               <center>  $x=g(s) \quad y=h(s) \quad z=k(x, y)$​​ </center><br>$$<br>\begin{matrix}<br>\Delta{s} &amp; \begin{matrix}<br>\longrightarrow \\<br>\longrightarrow<br>\end{matrix} &amp; \begin{matrix}<br>\Delta{x}\\<br>\Delta{y}<br>\end{matrix} &amp; \begin{matrix}<br>\longrightarrow\\<br>\longrightarrow<br>\end{matrix} &amp; \Delta{z}<br>\end{matrix} \quad \quad \quad \quad \quad \quad \frac{d z}{d s}=\frac{\partial z}{\partial x} \frac{d x}{d s}+\frac{\partial z}{\partial y} \frac{d y}{d s}<br>$$</p>
+</div>
+
+<p>以单个神经元举例Back Propagation</p>
+<p><img src="https://i.loli.net/2021/10/19/tFSPZYHCvxWD5eb.png" alt="image-20211019232243108"></p>
+<p>神经网络的损失函数与交叉熵有关，一般如下<br>$$<br>L(\theta)=\sum_{n=1}^{N} C^{n}(\theta)<br>$$<br>梯度下降<br>$$<br>\frac{\partial L(\theta)}{\partial w}=\sum_{n=1}^{N} \frac{\partial C^{n}(\theta)}{\partial w}<br>$$<br>其中<br>$$<br>\frac{\partial C}{\partial w}=\frac{\partial C}{\partial z}\frac{\partial z}{\partial w}<br>$$</p>
+<ul>
+<li>$\frac{\partial z}{\partial w} $ : <strong>Forward Pass</strong> compute ${\partial z}/{\partial w} $ for all parameters​​</li>
+<li>$\frac{\partial C}{\partial z}$ : <strong>Backward Pass</strong> compute ${\partial C}/{\partial z}$​f for all activation function inputs $z$​​​​</li>
+</ul>
+<h3 id="Forward-Pass"><a href="#Forward-Pass" class="headerlink" title="Forward Pass"></a><strong>Forward Pass</strong></h3><p>${\partial z}/{\partial w} $​   the input connected by the weight</p>
+<h3 id="Backward-Pass"><a href="#Backward-Pass" class="headerlink" title="Backward Pass"></a>Backward Pass</h3><p>compute ${\partial C}/{\partial z}$​  for all activation function inputs $z$​</p>
+<p><img src="https://i.loli.net/2021/10/20/5UFhjMOfBWsCqHE.png" alt="image-20211020132217497"></p>
+<p>$\sigma(\theta)$是激活函数<br>$$<br>\begin{aligned}<br>\frac{\partial C}{\partial z}&amp;={\color{green}\frac{\partial C}{\partial a}}{\color{red}\frac{\partial a}{\partial z}}\\<br>\\<br>a=&amp;\sigma(z),{\color{red}\frac{\partial a}{\partial z}}=\sigma’(\theta)\<br>\\<br>{\color{green}\frac{\partial C}{\partial a}}&amp;=\frac{\partial z^{\prime}}{\partial a} \frac{\partial C}{\partial z^{\prime}}+\frac{\partial z^{\prime \prime}}{\partial a} \frac{\partial C}{\partial z^{\prime \prime}}<br>\end{aligned}<br>$$<br><img src="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png" alt="image-20211020130351575"><br>$$<br>\frac{\partial C}{\partial z}=\sigma^{\prime}(z)\left[w_{3} \frac{\partial C}{\partial z^{\prime}}+w_{4} \frac{\partial C}{\partial z^{\prime \prime}}\right]<br>$$<br> $\sigma^{\prime}(z)$is a constant because $z$​is already determined in the forward pass.</p>
+<p><u><strong>case1:Output Layer</strong></u><br>$$<br>\frac{\partial C}{\partial z^{\prime}}=\frac{\partial y_{1}}{\partial z^{\prime}} \frac{\partial C}{\partial y_{1}} \quad \frac{\partial C}{\partial z^{\prime \prime}}=\frac{\partial y_{2}}{\partial z^{\prime \prime}} \frac{\partial C}{\partial y_{2}}<br>$$<br><u><strong>case2:Not Output Layer</strong></u></p>
+<p><img src="https://i.loli.net/2021/10/20/rscOwt7Z5lPdqhR.png" alt="image-20211020133519121"></p>
+<p>Compute ${\partial C}/{\partial z}$​  recursively until we reach the output layer​.</p>
+<img src="https://i.loli.net/2021/10/22/zanxXOvNc5q8EFS.png" alt="image-20211022145231582" style="zoom:67%;" />
+
+<p><strong>Reference</strong></p>
+<ol>
+<li>B站Datawhale:<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ht411g7Ef?p=13">李宏毅《机器学习》2017-深度学习介绍</a></li>
+<li>B站Datawhale:<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ht411g7Ef?p=14">李宏毅《机器学习》2017-反向传播</a></li>
+<li>Datawhale出品:<a target="_blank" rel="noopener" href="https://datawhalechina.github.io/leeml-notes/#/?id=%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0leeml-notes">李宏毅机器学习笔记(LeeML-Notes)</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/">lowkeng</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://lowkeng.github.io/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/">https://lowkeng.github.io/2021/11/06/李宏毅机器学习课程学习笔记05-深度学习介绍和反向传播/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="addthis_inline_share_toolbox"></div><script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6169756e1688c51f" async="async"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><img class="prev-cover" src="https://i.loli.net/2021/11/04/2mJUNATi7PI8Vda.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">李宏毅机器学习课程学习笔记07 - 卷积神经网络</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/"><img class="next-cover" src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">李宏毅机器学习课程学习笔记04 - 梯度下降</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://bityl.co/97sV" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lowkeng</div><div class="author-info__description">桃李春风一杯酒，江湖夜雨十年灯</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lowkeng" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:cnstevenluo@gmail.com@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/8877404" target="_blank" title="Bilibili"><i class="fas fa-tv"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#01%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D"><span class="toc-text">01深度学习介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#02-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%ADBack-Propagation"><span class="toc-text">02 反向传播Back Propagation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Forward-Pass"><span class="toc-text">Forward Pass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Backward-Pass"><span class="toc-text">Backward Pass</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络"><img src="https://i.loli.net/2021/11/04/2mJUNATi7PI8Vda.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记07 - 卷积神经网络"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B007-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="李宏毅机器学习课程学习笔记07 - 卷积神经网络">李宏毅机器学习课程学习笔记07 - 卷积神经网络</a><time datetime="2021-11-06T13:55:01.000Z" title="Created 2021-11-06 21:55:01">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"><img src="https://i.loli.net/2021/10/20/vn7hyNrpBtSxzaW.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B005-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD/" title="李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播">李宏毅机器学习课程学习笔记05 - 深度学习介绍和反向传播</a><time datetime="2021-11-06T13:25:31.000Z" title="Created 2021-11-06 21:25:31">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降"><img src="https://i.loli.net/2021/10/19/NKZOSYXdq7U81gf.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记04 - 梯度下降"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B004-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" title="李宏毅机器学习课程学习笔记04 - 梯度下降">李宏毅机器学习课程学习笔记04 - 梯度下降</a><time datetime="2021-11-06T12:57:24.000Z" title="Created 2021-11-06 20:57:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差"><img src="https://i.loli.net/2021/10/18/3ezNHfIwE8dG2so.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记03 - 误差"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B003-%E8%AF%AF%E5%B7%AE/" title="李宏毅机器学习课程学习笔记03 - 误差">李宏毅机器学习课程学习笔记03 - 误差</a><time datetime="2021-11-06T12:25:24.000Z" title="Created 2021-11-06 20:25:24">2021-11-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression"><img src="https://i.loli.net/2021/10/18/RqClW8OB4dn7FoU.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="李宏毅机器学习课程学习笔记02 - 回归Regression"/></a><div class="content"><a class="title" href="/2021/11/06/%E6%9D%8E%E5%AE%8F%E6%AF%85%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E5%9B%9E%E5%BD%92Regression/" title="李宏毅机器学习课程学习笔记02 - 回归Regression">李宏毅机器学习课程学习笔记02 - 回归Regression</a><time datetime="2021-11-06T10:51:13.000Z" title="Created 2021-11-06 18:51:13">2021-11-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By lowkeng</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
